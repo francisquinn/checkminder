@@ -1,6 +1,6 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { About } from "./routes/About";
-import { List } from "./routes/List";
+import { Item } from "./routes/Item";
 import { Lists } from "./routes/Lists";
 import { Error } from "./routes/Error";
 import { Run } from "./routes/Run";
@@ -17,7 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Lists />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/lists/:list_id" element={<List />}></Route>
+        <Route path="/lists/:list_id" element={<Item />}></Route>
         <Route path="/lists/:list_id/run" element={<Run />}></Route>
         <Route path="*" element={<Error />}></Route>
       </Routes>
