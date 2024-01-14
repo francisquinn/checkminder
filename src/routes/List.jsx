@@ -1,19 +1,18 @@
-import { useParams } from "react-router-dom";
-import { Item } from "../components/Item";
+import { Link, useParams } from "react-router-dom";
 import { Button } from "../components/Button";
 import { useEffect, useRef, useState } from "react";
 
 export function List() {
-    const { id } = useParams();
+    const { list_id } = useParams();
     const createInput = useRef();
-    const [items, setItems] = useState([]);
-    const [list, setList] = useState([]);
+    const [items, setItems] = useState(JSON.parse(localStorage.getItem('items')));
+    const [listItems, setListItems] = useState([]);
 
     useEffect(() => {
-        const lists = JSON.parse(localStorage.getItem('lists'));
-        const currentList = lists.find(list => list.id == id);
-        setItems(currentList.items)
-        setList(currentList)
+        if (items) {
+            const newItems = items.filter(item => item.list_id == list_id);
+            setListItems(newItems)
+        }
     }, []);
 
     function addItem(event) {
@@ -27,18 +26,29 @@ export function List() {
 
         const item = {
             id: generateListId(),
+            list_id: list_id,
             name: listName,
-            items: []
+        }
+
+        if (!items) {
+            updateListStorage([item]);
+            updateItemsStorage([item])
+        }
+        else {
+            updateListStorage([...items, item]);
+            updateItemsStorage([...listItems, item])
         }
         
-        updateListStorage([...items, item]);
-
         createInput.current.value = '';
     }
 
     function updateListStorage(l) {
-        
+        localStorage.setItem('items', JSON.stringify(l));
         setItems(l);
+    }
+
+    function updateItemsStorage(l) {
+        setListItems(l);
     }
 
     function generateListId() {
@@ -47,12 +57,12 @@ export function List() {
 
     return (
         <>
-            <h1>List page { id }</h1>
-            { items.length == 0 ? (
+            <h1>List page { list_id }</h1>
+            { listItems.length == 0 ? (
                 <p>no items in storage</p>
             ) : (
                 <ul>
-                    {items.map(item => 
+                    {listItems.map(item => 
                         <li key={item.id}>
                             {item.name}
                         </li>
@@ -63,6 +73,7 @@ export function List() {
                 <input type="text" ref={createInput} />
                 <Button text="add" type="submit"></Button>
             </form>
+            <Link to='run' state={listItems}><Button text="start"></Button></Link>
         </>
     )
 }

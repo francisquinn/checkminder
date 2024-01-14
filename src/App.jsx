@@ -3,6 +3,7 @@ import { About } from "./routes/About";
 import { List } from "./routes/List";
 import { Lists } from "./routes/Lists";
 import { Error } from "./routes/Error";
+import { Run } from "./routes/Run";
 
 export default function App() {
   return (
@@ -16,7 +17,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Lists />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/lists/:id" element={<List />}></Route>
+        <Route path="/lists/:list_id" element={<List />}></Route>
+        <Route path="/lists/:list_id/run" element={<Run />}></Route>
         <Route path="*" element={<Error />}></Route>
       </Routes>
     </>

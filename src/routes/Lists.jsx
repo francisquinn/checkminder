@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 
 export function Lists() {
     const createInput = useRef();
+    const editBtn = useRef();
+    const deleteBtn = useRef()
     const [lists, setLists] = useState(JSON.parse(localStorage.getItem('lists')));
 
     function createListItem(event) {
@@ -17,8 +19,7 @@ export function Lists() {
 
         const item = {
             id: generateListId(),
-            name: listName,
-            items: []
+            name: listName
         }
 
         if (!lists) {
@@ -40,6 +41,14 @@ export function Lists() {
         return Math.random().toString(36).substring(2, 7);
     }
 
+    function editList() {
+        console.log('edit value!')
+    }
+
+    function deleteList() {
+        console.log('delete list!')
+    }
+
     // TODO remove after dev
     function clearStorage() {
         localStorage.removeItem('lists');
@@ -55,7 +64,9 @@ export function Lists() {
                 <ul>
                     {lists.map(list => 
                         <li key={list.id}>
-                            <Link to={`lists/${list.id}`}>{list.name}</Link>
+                            <Link to={`lists/${list.id}`} state={list}>{list.name}</Link>
+                            <button onClick={editList} ref={editBtn}>edit</button>
+                            <button onClick={deleteList} ref={deleteBtn}>delete</button>
                         </li>
                     )}
                 </ul>
