@@ -1,48 +1,35 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { List } from "../components/List";
 
 export function Item() {
     const { list_id } = useParams();
-    const [items, setItems] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
-    const [listItems, setListItems] = useState([]);
+    const [ items ] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
+    const [ listItems, setListItems ] = useState([]);
 
     useEffect(() => {
-        const newItems = items.filter(item => item.list_id == list_id);
-        setListItems(newItems);
+        const currentItems = items.filter(item => item.list_id == list_id);
+        setListItems(currentItems);
     }, []);
 
-    function updateItemStorage(items) {
-        localStorage.setItem('items', JSON.stringify(items));
-        setItems(items);
+    function updateItemStorage(item) {
+        localStorage.setItem('items', JSON.stringify([...items, item]));
+        setListItems([...listItems, item]);
     }
 
-    // function updateItemsStorage(l) {
-    //     setListItems(l);
-    // }
+    function removeItem(item) {
+        const nits = items.filter(i => i.id != item.id);
+        localStorage.setItem('items', JSON.stringify(nits));
+    }
 
     return (
         <>
             <h1>List page { list_id }</h1>
             <List
                 items={listItems}
+                listId={list_id}
+                onDelete={removeItem}
                 onCreate={updateItemStorage}/>
-            {/* { listItems.length == 0 ? (
-                <p>no items in storage</p>
-            ) : (
-                <ul>
-                    {listItems.map(item => 
-                        <li key={item.id}>
-                            {item.name}
-                        </li>
-                    )}
-                </ul>
-            )}
-            <form action="/" onSubmit={addItem}>
-                <input type="text" ref={createInput} />
-                <Button text="add" type="submit"></Button>
-            </form>
-            <Link to='run' state={listItems}><Button text="start"></Button></Link> */}
         </>
     )
 }

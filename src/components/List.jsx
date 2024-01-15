@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Button } from "./Button";
 import { Link } from "react-router-dom";
 
-export function List({ items, onCreate }) {
+export function List({ items, listId, onDelete, onCreate }) {
     const createInput = useRef();
     const editBtn = useRef();
     const deleteBtn = useRef()
@@ -19,9 +19,13 @@ export function List({ items, onCreate }) {
         const item = {
             id: generateListId(),
             name: value
+        };
+
+        if (listId) {
+            item['list_id'] = listId;
         }
         
-        onCreate([...items, item]);
+        onCreate(item);
         createInput.current.value = '';
     }
 
@@ -33,8 +37,16 @@ export function List({ items, onCreate }) {
         console.log('edit value!');
     }
 
-    function deleteList() {
+    function deleteList(e) {
         console.log('delete list!');
+        const li = deleteBtn.current.parentNode;
+
+        const itd = items.find(item => item.id == li.dataset.itemId)
+
+        onDelete(itd);
+
+
+        li.remove();
     }
 
     return (
@@ -44,7 +56,7 @@ export function List({ items, onCreate }) {
             ) : (
                 <ul>
                     {items.map(list => 
-                        <li key={list.id}>
+                        <li key={list.id} data-item-id={list.id}>
                             <Link to={`lists/${list.id}`} state={list}>{list.name}</Link>
                             <button onClick={editList} ref={editBtn}>edit</button>
                             <button onClick={deleteList} ref={deleteBtn}>delete</button>

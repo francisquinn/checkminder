@@ -5,8 +5,8 @@ export function Lists() {
     const [lists, setLists] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
 
     function updateListStorage(list) {
-        localStorage.setItem('lists', JSON.stringify(list));
-        setLists(list);
+        localStorage.setItem('lists', JSON.stringify([...lists, list]));
+        setLists([...lists, list]);
     }
 
     return (
