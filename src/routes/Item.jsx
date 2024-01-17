@@ -31,5 +31,5 @@ export function Item() {
                 onDelete={removeItem}
                 onCreate={updateItemStorage}/>
         </>
-    )
+    );
 }

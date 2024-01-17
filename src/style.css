@@ -12,3 +12,18 @@ body {
     margin: 0;
     padding: 0;
 }
+
+/* LIST */
+
+.list {
+    padding: 0;
+    list-style-type: none;
+}
+
+.list article {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f4f4f4;
+}

@@ -1,0 +1,8 @@
+{
+    "name": "checklist",
+    "short_name": "checklist",
+    "start_url": "./",
+    "theme_color": "#ffffff",
+    "scope": "./",
+    "display": "standalone"
+}

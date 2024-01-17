@@ -2,8 +2,14 @@ import { useRef } from "react";
 import { Button } from "./Button";
 import { Link } from "react-router-dom";
 
+/**
+ * TODO
+ * [] - edit list item
+ */
+
 export function List({ items, listId, onDelete, onCreate }) {
     const createInput = useRef();
+    const listItem = useRef();
     const editBtn = useRef();
     const deleteBtn = useRef()
 
@@ -35,17 +41,19 @@ export function List({ items, listId, onDelete, onCreate }) {
 
     function editList() {
         console.log('edit value!');
+        const link = listItem.current;
+        console.log(listItem.current)
+
+        const input = document.createElement('input');
+        input.value = link.textContent
+
+        listItem.current.parentNode.replaceChild(input, link)
     }
 
-    function deleteList(e) {
-        console.log('delete list!');
+    function deleteList() {
         const li = deleteBtn.current.parentNode;
-
-        const itd = items.find(item => item.id == li.dataset.itemId)
-
-        onDelete(itd);
-
-
+        const itemToDelete = items.find(item => item.id == li.dataset.itemId);
+        onDelete(itemToDelete);
         li.remove();
     }
 
@@ -54,12 +62,18 @@ export function List({ items, listId, onDelete, onCreate }) {
             { items.length == 0 ? (
                 <p>no lists in storage :(</p>
             ) : (
-                <ul>
+                <ul className="list">
                     {items.map(list => 
                         <li key={list.id} data-item-id={list.id}>
-                            <Link to={`lists/${list.id}`} state={list}>{list.name}</Link>
-                            <button onClick={editList} ref={editBtn}>edit</button>
-                            <button onClick={deleteList} ref={deleteBtn}>delete</button>
+                            <article>
+                                <div className="list-item">
+                                    <Link to={`lists/${list.id}`} ref={listItem} state={list}>{list.name}</Link>
+                                </div>
+                                <div className="list-actions">
+                                    <button onClick={editList} ref={editBtn}>edit</button>
+                                    <button onClick={deleteList} ref={deleteBtn}>delete</button>
+                                </div>
+                            </article>
                         </li>
                     )}
                 </ul>
