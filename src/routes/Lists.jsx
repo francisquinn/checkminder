@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { List } from "../components/List";
 
+/**
+ * TODO
+ * [] - edit list in storage
+ */
+
 export function Lists() {
     const [lists, setLists] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
     const [items] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
@@ -18,13 +23,25 @@ export function Lists() {
         localStorage.setItem('items', JSON.stringify(updatedItems));
     }
 
+    function editList(list) {
+        const newLists = lists.map(l => {
+            if (l.id == list.id) {
+                l.name = list.name
+            }
+            return l;
+        });
+
+        localStorage.setItem('lists', JSON.stringify(newLists));
+    }
+
     return (
         <>
             <h1>Checklists</h1>
             <List 
                 items={lists} 
                 onCreate={updateListStorage}
-                onDelete={removeList} />
+                onDelete={removeList}
+                onEdit={editList} />
         </>
     );
 }

@@ -1,17 +1,19 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./Button";
 import { Link } from "react-router-dom";
 
 /**
  * TODO
- * [] - edit list item
+ * [x] - edit list item
+ * [x] - refactor deleteItem function
+ * [] - create input on button click
  */
 
-export function List({ items, listId, onDelete, onCreate }) {
+export function List({ items, listId, onDelete, onCreate, onEdit }) {
+    const [itemToEdit, setItemToEdit] = useState(null);
     const createInput = useRef();
-    const listItem = useRef();
     const editBtn = useRef();
-    const deleteBtn = useRef()
+    const deleteBtn = useRef();
 
     function createListItem(event) {
         event.preventDefault();
@@ -25,7 +27,7 @@ export function List({ items, listId, onDelete, onCreate }) {
         const item = {
             id: generateListId(),
             name: value
-        };
+        }
 
         if (listId) {
             item['list_id'] = listId;
@@ -39,22 +41,63 @@ export function List({ items, listId, onDelete, onCreate }) {
         return Math.random().toString(36).substring(2, 7);
     }
 
-    function editList() {
-        console.log('edit value!');
-        const link = listItem.current;
-        console.log(listItem.current)
-
-        const input = document.createElement('input');
-        input.value = link.textContent
-
-        listItem.current.parentNode.replaceChild(input, link)
+    function editItem(item) {
+        setItemToEdit(item);
     }
 
-    function deleteList() {
-        const li = deleteBtn.current.parentNode;
-        const itemToDelete = items.find(item => item.id == li.dataset.itemId);
-        onDelete(itemToDelete);
-        li.remove();
+    function deleteItem(e, item) {
+        const card = e.target.closest('article');
+        onDelete(item);
+        card.remove();
+    }
+
+    function renderItems(item) {
+        if (itemToEdit == item) {
+            return renderEditForm();
+        }
+        return <Link to={`lists/${item.id}`} state={item}>{item.name}</Link>
+    }
+
+    function renderActions(item) {
+
+        const actions = () => {
+            return (
+                <>
+                    <button type="button" onClick={() => editItem(item)}>edit</button>
+                    <button type="button" onClick={(e) => deleteItem(e, item)}>delete</button>
+                </>
+            );
+        }
+
+        if (itemToEdit == item) {
+            return <input type="submit" value="done" />
+        }
+
+        return actions();
+    }
+
+    function renderEditForm() {
+        let newVal = null;
+
+        const changed = (e) => {
+            newVal = e.target.value;
+            itemToEdit.name = newVal;
+        };
+
+        return (
+            <input type="text" name="edit" defaultValue={itemToEdit.name} onChange={changed} />
+        );
+    }
+
+    function handleSubmition(e) {
+        e.preventDefault();
+
+        const handleEditSubmit = () => {
+            onEdit(itemToEdit);
+            setItemToEdit(null);
+        };
+        
+        handleEditSubmit();
     }
 
     return (
@@ -63,17 +106,18 @@ export function List({ items, listId, onDelete, onCreate }) {
                 <p>no lists in storage :(</p>
             ) : (
                 <ul className="list">
-                    {items.map(list => 
-                        <li key={list.id} data-item-id={list.id}>
-                            <article>
-                                <div className="list-item">
-                                    <Link to={`lists/${list.id}`} ref={listItem} state={list}>{list.name}</Link>
-                                </div>
-                                <div className="list-actions">
-                                    <button onClick={editList} ref={editBtn}>edit</button>
-                                    <button onClick={deleteList} ref={deleteBtn}>delete</button>
-                                </div>
-                            </article>
+                    {items.map(item => 
+                        <li key={item.id}>
+                            <form action="/" onSubmit={handleSubmition}>
+                                <article data-item-id={item.id}>
+                                    <div className="list-item">
+                                        { renderItems(item) }
+                                    </div>
+                                    <div className="list-actions">
+                                        { renderActions(item) }
+                                    </div>
+                                </article>
+                            </form>
                         </li>
                     )}
                 </ul>

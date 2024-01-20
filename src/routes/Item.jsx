@@ -22,6 +22,17 @@ export function Item() {
         localStorage.setItem('items', JSON.stringify(nits));
     }
 
+    function editItem(list) {
+        const newLists = items.map(l => {
+            if (l.id == list.id) {
+                l.name = list.name
+            }
+            return l;
+        });
+
+        localStorage.setItem('items', JSON.stringify(newLists));
+    }
+
     return (
         <>
             <h1>List page { list_id }</h1>
@@ -29,7 +40,8 @@ export function Item() {
                 items={listItems}
                 listId={list_id}
                 onDelete={removeItem}
-                onCreate={updateItemStorage}/>
+                onCreate={updateItemStorage} 
+                onEdit={editItem}/>
         </>
     );
 }
