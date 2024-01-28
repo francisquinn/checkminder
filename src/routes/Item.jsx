@@ -23,14 +23,7 @@ export function Item() {
     }
 
     function editItem(list) {
-        const newLists = items.map(l => {
-            if (l.id == list.id) {
-                l.name = list.name
-            }
-            return l;
-        });
-
-        localStorage.setItem('items', JSON.stringify(newLists));
+        localStorage.setItem('items', JSON.stringify(items));
     }
 
     return (
