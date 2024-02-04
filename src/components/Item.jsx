@@ -1,7 +1,5 @@
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export function Item({ item, onEdit, onDelete, onCreate }) {
     const card = useRef();
@@ -36,20 +34,14 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         const actions = () => {
             return (
                 <>
-                    <button type="button" onClick={editItem}>
-                        <FontAwesomeIcon icon={faPen} />
-                    </button>
-                    <button type="button" onClick={deleteItem}>
-                        <FontAwesomeIcon icon={faTrash} />
-                    </button>
+                    <button type="button" className="item-icon-wrapper item-icon-edit" onClick={editItem}></button>
+                    <button type="button" className="item-icon-wrapper item-icon-trash" onClick={deleteItem}></button>
                 </>
             );
         }
 
         if (isEditing) {
-            return <button type="button" onClick={done}>
-                <FontAwesomeIcon icon={faCheck} />
-            </button>
+            return <button type="button" onClick={done}>done</button>
         }
 
         if (isCreating) {

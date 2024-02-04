@@ -61,6 +61,22 @@ body {
     font-size: 16px;
 }
 
-.btn-link {
+/* ICONS */
 
+.item-icon-wrapper {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    border-radius: 50%;
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+}
+
+.item-icon-edit {
+    background-image: url(./icons/pen-solid.svg);
+}
+
+.item-icon-trash {
+    background-image: url(./icons/trash-solid.svg);
 }
