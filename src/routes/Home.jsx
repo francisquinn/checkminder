@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { List } from "../components/List";
+import { Table } from "../components/Table";
 
-/**
- * TODO
- * [] - edit list in storage
- */
-
-export function Lists() {
-    const [lists, setLists] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
-    const [items] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
+export function Home() {
+    const [ lists, setLists ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
+    const [ items, setItems ] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
 
     function updateListStorage(list) {
         localStorage.setItem('lists', JSON.stringify([...lists, list]));
@@ -21,6 +16,9 @@ export function Lists() {
 
         localStorage.setItem('lists', JSON.stringify(updatedList));
         localStorage.setItem('items', JSON.stringify(updatedItems));
+
+        setLists(updatedList);
+        setItems(updatedItems)
     }
 
     function editList(list) {
@@ -37,8 +35,8 @@ export function Lists() {
     return (
         <>
             <h1>Checklists</h1>
-            <List 
-                items={lists} 
+            <Table 
+                items={lists}
                 onCreate={updateListStorage}
                 onDelete={removeList}
                 onEdit={editList} />
