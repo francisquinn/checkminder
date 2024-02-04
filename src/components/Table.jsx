@@ -41,7 +41,7 @@ export function Table({ items, listId, onDelete, onCreate, onEdit }) {
                     )}
                 </ul>
             )}
-            <Button text="create" type="button" onClick={create}></Button>
+            <Button text="create" type="button" className="btn" onClick={create}></Button>
         </>
     );
 }

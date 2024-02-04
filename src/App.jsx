@@ -18,7 +18,7 @@ export default function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/lists/:list_id" element={<List />}></Route>
-        <Route path="/lists/:list_id/run" element={<Checker />}></Route>
+        <Route path="/lists/:list_id/checker" element={<Checker />}></Route>
         <Route path="*" element={<Error />}></Route>
       </Routes>
     </>

@@ -6,17 +6,20 @@ import { Button } from "../components/Button";
 export function List() {
     const { list_id } = useParams();
     const [ items, setItems ] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
+    const [ list, setList ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
     const [ listItems, setListItems ] = useState([]);
+    const [ item, setItem ] = useState({});
 
     useEffect(() => {
         const currentItems = items.filter(item => item.list_id == list_id);
         setListItems(currentItems);
+        setList(() => list.find(list => list.id == list_id))
     }, []);
 
     function updateItemStorage(item) {
         localStorage.setItem('items', JSON.stringify([...items, item]));
         setListItems([...listItems, item]);
-        setItems([...items, item])
+        setItems([...items, item]);
     }
 
     function removeItem(item) {
@@ -25,12 +28,12 @@ export function List() {
         setItems(updatedItems)
     }
 
-    function editItem(list) {
-        const newLists = items.map(l => {
-            if (l.id == list.id) {
-                l.name = list.name
+    function editItem(item) {
+        const newLists = items.map(i => {
+            if (i.id == item.id) {
+                i.name = item.name
             }
-            return l;
+            return i;
         });
 
         localStorage.setItem('items', JSON.stringify(newLists));
@@ -38,7 +41,7 @@ export function List() {
 
     return (
         <>
-            <h1>List page { list_id }</h1>
+            <h1>{ list.name }</h1>
             <Table
                 items={listItems}
                 listId={list_id}
@@ -47,7 +50,7 @@ export function List() {
                 onEdit={editItem}/>
 
             <button type="button">
-                <Link to="run" state={listItems}>start</Link>
+                <Link to="checker" state={listItems}>start</Link>
             </button>
         </>
     );

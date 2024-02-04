@@ -1,5 +1,7 @@
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export function Item({ item, onEdit, onDelete, onCreate }) {
     const card = useRef();
@@ -13,7 +15,7 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         }
 
         if (isEditing || isCreating) {
-            return <input type="text" defaultValue={itemToEdit.name} onChange={handleItemToEdit} />
+            return <input type="text" defaultValue={itemToEdit.name} autoFocus onChange={handleItemToEdit} />
         }
 
         if (itemToEdit.list_id) {
@@ -34,14 +36,20 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         const actions = () => {
             return (
                 <>
-                    <button type="button" onClick={editItem}>edit</button>
-                    <button type="button" onClick={deleteItem}>delete</button>
+                    <button type="button" onClick={editItem}>
+                        <FontAwesomeIcon icon={faPen} />
+                    </button>
+                    <button type="button" onClick={deleteItem}>
+                        <FontAwesomeIcon icon={faTrash} />
+                    </button>
                 </>
             );
         }
 
         if (isEditing) {
-            return <button type="button" onClick={done}>done</button>
+            return <button type="button" onClick={done}>
+                <FontAwesomeIcon icon={faCheck} />
+            </button>
         }
 
         if (isCreating) {
