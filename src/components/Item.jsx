@@ -8,7 +8,7 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
     const [ itemToEdit, setItemToEdit ] = useState(item)
 
     function renderItem() {
-        if (itemToEdit.name.length == 0 && !isCreating) {
+        if (itemToEdit.name.length == 0 && !isCreating && !isEditing) {
             setIsCreating(true);
         }
 
@@ -20,7 +20,7 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
             return <span>{itemToEdit.name}</span>
         }
 
-        return <Link to={`/lists/${itemToEdit.id}`} state={itemToEdit}>{itemToEdit.name}</Link>
+        return <Link to={`/${itemToEdit.id}`} state={itemToEdit}>{itemToEdit.name}</Link>
     }
 
     function handleItemToEdit(e) {
@@ -34,40 +34,30 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         const actions = () => {
             return (
                 <>
-                    <button type="button" className="item-icon-wrapper item-icon-edit" onClick={editItem}></button>
-                    <button type="button" className="item-icon-wrapper item-icon-trash" onClick={deleteItem}></button>
+                    <button type="button" className="icon icon-item-wrapper icon-edit" onClick={() => setIsEditing(true)}></button>
+                    <button type="button" className="icon icon-item-wrapper icon-trash" onClick={() => {
+                        onDelete(itemToEdit);
+                        card.current.remove();
+                    }}></button>
                 </>
             );
         }
 
         if (isEditing) {
-            return <button type="button" onClick={done}>done</button>
+            return <button type="button" onClick={() => {
+                onEdit(itemToEdit);
+                setIsEditing(false);
+            }}>done</button>
         }
 
         if (isCreating) {
-            return <button type="button" onClick={doneCreate}>create</button>
+            return <button type="button" onClick={() => {
+                onCreate(itemToEdit);
+                setIsCreating(false);
+            }}>create</button>
         }
 
         return actions();
-    }
-
-    function editItem() {
-        setIsEditing(true);
-    }
-
-    function deleteItem() {
-        onDelete(itemToEdit);
-        card.current.remove();
-    }
-
-    function done() {
-        onEdit(itemToEdit);
-        setIsEditing(false);
-    }
-
-    function doneCreate() {
-        onCreate(itemToEdit);
-        setIsCreating(false);
     }
 
     return(

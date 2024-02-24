@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "./Button";
 import { Item } from "./Item";
 
-export function Table({ items, listId, onDelete, onCreate, onEdit }) {
+export function List({ items, listId, onDelete, onCreate, onEdit }) {
     const [ listItems, setListItems ] = useState(items);
 
     useEffect(() => setListItems(items), [items]);
@@ -21,7 +20,7 @@ export function Table({ items, listId, onDelete, onCreate, onEdit }) {
             item['list_id'] = listId;
         }
 
-        setListItems([...listItems, item])
+        setListItems([...listItems, item]);
     }
 
     return (
@@ -41,7 +40,10 @@ export function Table({ items, listId, onDelete, onCreate, onEdit }) {
                     )}
                 </ul>
             )}
-            <Button text="create" type="button" className="btn" onClick={create}></Button>
+            <button type="button" className="btn btn-create" onClick={create}>
+                <span className="icon icon-plus"></span>
+                Create item
+            </button>
         </>
     );
 }

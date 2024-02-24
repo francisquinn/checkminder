@@ -1,5 +1,6 @@
 :root {
     --grey: #f4f4f4;
+    --blue: #6666FF;
 }
 
 *, *::before, *::after {
@@ -25,15 +26,28 @@ body {
 
 /* LIST */
 
+h1 {
+    margin: 0;
+}
+
 .list {
     padding: 0;
     list-style-type: none;
 }
 
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    line-height: 45px;
+    height: 45px;
+}
+
 .list article {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
+    height: 60px;
     margin-bottom: 10px;
     background-color: var(--grey);
     border-radius: 50px;
@@ -41,6 +55,7 @@ body {
 
 .list-item {
     flex: 1;
+    min-width: 0;
 }
 
 .list-item a {
@@ -50,6 +65,10 @@ body {
     width: 100%;
     height: 100%;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
 }
 
 /* BUTTONS */
@@ -61,22 +80,49 @@ body {
     font-size: 16px;
 }
 
+.btn-create {
+    background: none;
+    border: none;
+    color: var(--blue);
+    padding: 10px 0;
+}
+
 /* ICONS */
 
-.item-icon-wrapper {
+.icon {
+    display: inline-block;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 20px 20px;
     border-radius: 50%;
+}
+
+.icon-item-wrapper {
     border: 1px solid black;
     height: 40px;
     width: 40px;
 }
 
-.item-icon-edit {
+.icon-edit {
     background-image: url(./icons/pen-solid.svg);
+    margin-right: 5px;
 }
 
-.item-icon-trash {
+.icon-trash {
     background-image: url(./icons/trash-solid.svg);
+}
+
+.icon-play {
+    background-image: url(./icons/play-solid.svg);
+    background-color: var(--blue);
+    width: 45px;
+    height: 45px;
+}
+
+.icon-plus {
+    background-image: url(./icons/circle-plus-solid.svg);
+    vertical-align: bottom;
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
 }

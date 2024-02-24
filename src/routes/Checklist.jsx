@@ -1,14 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Table } from "../components/Table";
-import { Button } from "../components/Button";
+import { List } from "../components/List";
 
-export function List() {
+export function Checklist() {
     const { list_id } = useParams();
     const [ items, setItems ] = useState(JSON.parse(localStorage.getItem('items')) ?? []);
     const [ list, setList ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
     const [ listItems, setListItems ] = useState([]);
-    const [ item, setItem ] = useState({});
 
     useEffect(() => {
         const currentItems = items.filter(item => item.list_id == list_id);
@@ -25,33 +23,37 @@ export function List() {
     function removeItem(item) {
         const updatedItems = items.filter(i => i.id != item.id);
         localStorage.setItem('items', JSON.stringify(updatedItems));
-        setItems(updatedItems)
+        setItems(updatedItems);
     }
 
     function editItem(item) {
-        const newLists = items.map(i => {
+        const updatedItems = items.map(i => {
             if (i.id == item.id) {
                 i.name = item.name
             }
             return i;
         });
 
-        localStorage.setItem('items', JSON.stringify(newLists));
+        localStorage.setItem('items', JSON.stringify(updatedItems));
     }
 
     return (
         <>
-            <h1>{ list.name }</h1>
-            <Table
+            <div className="list-header">
+                <h1>{ list.name }</h1>
+                { listItems.length > 0 && (
+                    <Link to="checker" state={listItems}>
+                        <span className="icon icon-play"></span>
+                    </Link>
+                )}
+            </div>
+           
+            <List
                 items={listItems}
                 listId={list_id}
                 onDelete={removeItem}
                 onCreate={updateItemStorage} 
                 onEdit={editItem}/>
-
-            <button type="button">
-                <Link to="checker" state={listItems}>start</Link>
-            </button>
         </>
     );
 }

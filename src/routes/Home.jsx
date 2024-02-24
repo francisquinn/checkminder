@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table } from "../components/Table";
+import { List } from "../components/List";
 
 export function Home() {
     const [ lists, setLists ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
@@ -22,20 +22,22 @@ export function Home() {
     }
 
     function editList(list) {
-        const newLists = lists.map(l => {
+        const updatedList = lists.map(l => {
             if (l.id == list.id) {
                 l.name = list.name
             }
             return l;
         });
 
-        localStorage.setItem('lists', JSON.stringify(newLists));
+        localStorage.setItem('lists', JSON.stringify(updatedList));
     }
 
     return (
         <>
-            <h1>Checklists</h1>
-            <Table 
+            <div className="list-header">
+                <h1>Checklists</h1>
+            </div>
+            <List 
                 items={lists}
                 onCreate={updateListStorage}
                 onDelete={removeList}
