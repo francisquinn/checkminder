@@ -47,7 +47,7 @@ export function Checker() {
                         )}
                     </ul>
 
-                    <button onClick={() => history.back()}>return to list</button>
+                    <button className="btn" onClick={() => history.back()}>return to list</button>
                 </>
             ) : (
                 <>
@@ -55,8 +55,8 @@ export function Checker() {
                         <li>{items[index].name}</li>
                     </ul>
                     <div>
-                        <button onClick={check}>check</button>
-                        <button onClick={skip}>skip</button>
+                        <button className="btn" onClick={check}>check</button>
+                        <button className="btn" onClick={skip}>skip</button>
                     </div>
                 </>
             )}

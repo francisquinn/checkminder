@@ -6,7 +6,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    /* font-family: 'Open Sans', sans-serif; */
 }
 
 html {
@@ -56,6 +55,7 @@ h1 {
 .list-item {
     flex: 1;
     min-width: 0;
+    font-size: 16px;
 }
 
 .list-item a {
@@ -68,7 +68,11 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    
+}
+
+.list-item input {
+    font-size: 16px;
+    width: 90%;
 }
 
 /* BUTTONS */
