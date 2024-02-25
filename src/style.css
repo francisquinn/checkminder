@@ -75,6 +75,17 @@ h1 {
     width: 90%;
 }
 
+/* NAV */
+
+nav {
+    position: fixed;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    bottom: 0;
+    background-color: lightblue;
+    width: 100%;
+    left: 0;
+}
+
 /* BUTTONS */
 
 .btn {
