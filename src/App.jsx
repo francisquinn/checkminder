@@ -21,7 +21,7 @@ export default function App() {
           <ul>
             <li>
               <Link to="/checklist">
-                <img src="/checklist/src/icons/list-ul-solid.svg" width={25} height={25} />
+                <span className="icon icon-list"></span>
               </Link>
             </li>
             <li><Link to="/checklist/about">About</Link></li>

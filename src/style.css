@@ -38,14 +38,15 @@ nav {
     margin-top: auto;
     background-color: white;
     border-top: 1px solid var(--grey);
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+    padding: 15px 0;
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
 }
 
 nav ul {
     display: flex;
     justify-content: space-around;
     margin: 0;
-    padding: 15px 0;
+    padding: 0;
     list-style-type: none;
 }
 
@@ -159,6 +160,8 @@ h1 {
 
 .icon-list {
     background-image: url(./icons/list-ul-solid.svg);
-    width: 20px;
-    height: 20px;
+    border-radius: 0;
+    background-size: 25px 25px;
+    width: 25px;
+    height: 25px;
 }
