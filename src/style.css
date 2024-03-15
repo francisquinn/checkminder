@@ -38,7 +38,7 @@ nav {
     margin-top: auto;
     background-color: white;
     border-top: 1px solid var(--grey);
-    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 }
 
 nav ul {
