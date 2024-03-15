@@ -1,5 +1,5 @@
 import { Link, Route, Routes } from "react-router-dom";
-import { About } from "./routes/About";
+import { Settings } from "./routes/Settings";
 import { Checklist } from "./routes/Checklist";
 import { Home } from "./routes/Home";
 import { Error } from "./routes/Error";
@@ -11,7 +11,7 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/checklist" element={<Home />}></Route>
-          <Route path="/checklist/about" element={<About />}></Route>
+          <Route path="/checklist/settings" element={<Settings />}></Route>
           <Route path="/checklist/:list_id" element={<Checklist />}></Route>
           <Route path="/checklist/:list_id/checker" element={<Checker />}></Route>
           <Route path="*" element={<Error />}></Route>
@@ -21,10 +21,14 @@ export default function App() {
           <ul>
             <li>
               <Link to="/checklist">
-                <span className="icon icon-list"></span>
+                <span className="icon icon-nav icon-list"></span>
               </Link>
             </li>
-            <li><Link to="/checklist/about">About</Link></li>
+            <li>
+              <Link to="/checklist/settings">
+                <span className="icon icon-nav icon-gear"></span>
+              </Link>
+            </li>
           </ul>
         </nav>
     </>

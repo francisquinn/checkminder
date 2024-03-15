@@ -1,6 +1,8 @@
 :root {
     --grey: #f4f4f4;
+    --lightgrey: #fafafa;
     --blue: #6666FF;
+    --black: #4c4c4c;
 }
 
 *, *::before, *::after {
@@ -26,8 +28,8 @@ body {
 }
 
 main {
-    margin: 20px 0;
-    padding: 0 10px;
+    margin-bottom: 20px;
+    padding: 0 20px;
 }
 
 nav {
@@ -62,9 +64,13 @@ h1 {
 
 .list-header {
     display: flex;
+    position: sticky;
+    top: 0;
+    padding-top: 15px;
+    background-color: #ffffff;
     justify-content: space-between;
-    line-height: 45px;
-    height: 45px;
+    line-height: 50px;
+    height: 70px;
 }
 
 .list article {
@@ -74,7 +80,7 @@ h1 {
     padding: 10px 20px;
     height: 60px;
     margin-bottom: 10px;
-    background-color: var(--grey);
+    background-color: var(--lightgrey);
     border-radius: 50px;
 }
 
@@ -106,8 +112,13 @@ h1 {
 .btn {
     padding: 10px 20px;
     border-radius: 40px;
-    border: 1px solid lightblue;
+    border: none;
     font-size: 16px;
+}
+
+.btn-primary {
+    background-color: var(--blue);
+    color: white;
 }
 
 .btn-create {
@@ -128,7 +139,8 @@ h1 {
 }
 
 .icon-item-wrapper {
-    border: 1px solid black;
+    background-color: white;
+    border: none;
     height: 40px;
     width: 40px;
 }
@@ -145,8 +157,9 @@ h1 {
 .icon-play {
     background-image: url(./icons/play-solid.svg);
     background-color: var(--blue);
-    width: 45px;
-    height: 45px;
+    position: sticky;
+    width: 50px;
+    height: 50px;
 }
 
 .icon-plus {
@@ -157,10 +170,17 @@ h1 {
     height: 20px;
 }
 
-.icon-list {
-    background-image: url(./icons/list-ul-solid.svg);
+.icon-nav {
     border-radius: 0;
     background-size: 25px 25px;
     width: 25px;
     height: 25px;
+}
+
+.icon-nav.icon-list {
+    background-image: url(./icons/list-ul-solid.svg);
+}
+
+.icon-nav.icon-gear {
+    background-image: url(./icons/gear-solid.svg);
 }

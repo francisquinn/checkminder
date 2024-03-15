@@ -44,14 +44,14 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         }
 
         if (isEditing) {
-            return <button className="btn" onClick={() => {
+            return <button className="btn btn-primary" onClick={() => {
                 onEdit(itemToEdit);
                 setIsEditing(false);
             }}>Done</button>
         }
 
         if (isCreating) {
-            return <button className="btn" onClick={() => {
+            return <button className="btn btn-primary" onClick={() => {
                 onCreate(itemToEdit);
                 setIsCreating(false);
             }}>Create</button>
