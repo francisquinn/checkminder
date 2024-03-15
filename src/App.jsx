@@ -18,11 +18,15 @@ export default function App() {
         </Routes>
       </main>
       <nav>
-        <ul>
-          <li><Link to="/checklist">Lists</Link></li>
-          <li><Link to="/checklist/about">About</Link></li>
-        </ul>
-      </nav>
+          <ul>
+            <li>
+              <Link to="/checklist">
+                <img src="/checklist/src/icons/list-ul-solid.svg" width={25} height={25} />
+              </Link>
+            </li>
+            <li><Link to="/checklist/about">About</Link></li>
+          </ul>
+        </nav>
     </>
   )
 }
