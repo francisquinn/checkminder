@@ -23,6 +23,7 @@ export function Checklist() {
     function removeItem(item) {
         const updatedItems = items.filter(i => i.id != item.id);
         localStorage.setItem('items', JSON.stringify(updatedItems));
+        setListItems(listItems.filter(i => i != item));
         setItems(updatedItems);
     }
 
@@ -35,6 +36,7 @@ export function Checklist() {
         });
 
         localStorage.setItem('items', JSON.stringify(updatedItems));
+        setItems(updatedItems);
     }
 
     return (
