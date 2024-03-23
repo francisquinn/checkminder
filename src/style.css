@@ -51,7 +51,7 @@ nav ul {
     list-style-type: none;
 }
 
-/* LIST */
+/* list */
 
 h1 {
     margin: 0;
@@ -80,8 +80,9 @@ h1 {
     padding: 10px 20px;
     height: 60px;
     margin-bottom: 10px;
-    background-color: var(--lightgrey);
+    background-color: white;
     border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
 .list-item {
@@ -105,15 +106,48 @@ h1 {
 .list-item input {
     font-size: 16px;
     width: 90%;
+    border-radius: 20px;
+    padding: 5px 10px;
+    outline: none !important;
+    border: 1px solid var(--grey);
 }
 
-/* BUTTONS */
+.list-item input:focus,
+.list-item input:focus-visible {
+    border-color: var(--blue);
+}
+
+/* checker */
+
+.checker-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 100%;
+}
+
+.checker-container .checker-items{
+    margin: auto;
+}
+
+.checker-container .checker-actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.checker-items ul {
+    padding: 0;
+    list-style-type: circle;
+}
+
+/* btn */
 
 .btn {
     padding: 10px 20px;
     border-radius: 40px;
     border: none;
     font-size: 16px;
+    cursor: pointer;
 }
 
 .btn-primary {
@@ -121,14 +155,21 @@ h1 {
     color: white;
 }
 
-.btn-create {
-    background: none;
-    border: none;
+.btn-secondary {
+    background-color: #ffffff;
     color: var(--blue);
+}
+
+.btn-create {
     padding: 10px 0;
 }
 
-/* ICONS */
+.btn-checker {
+    width: 100%;
+    height: 50px;
+}
+
+/* icon */
 
 .icon {
     display: inline-block;
@@ -183,4 +224,10 @@ h1 {
 
 .icon-nav.icon-gear {
     background-image: url(./icons/gear-solid.svg);
+}
+
+/* utils */
+
+.d-none {
+    display: none;
 }

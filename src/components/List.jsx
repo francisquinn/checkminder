@@ -40,7 +40,7 @@ export function List({ items, listId, onDelete, onCreate, onEdit }) {
                     )}
                 </ul>
             )}
-            <button type="button" className="btn btn-create" onClick={create}>
+            <button type="button" className="btn btn-secondary btn-create" onClick={create}>
                 <span className="icon icon-plus"></span>
                 Create item
             </button>
