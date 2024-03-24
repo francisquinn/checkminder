@@ -7,7 +7,7 @@ export function Footer({ isChecker }) {
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/checklist">
+                            <Link to="/checklist/">
                                 <span className="icon icon-nav icon-list"></span>
                             </Link>
                         </li>

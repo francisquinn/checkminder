@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 
-export function Item({ item, onEdit, onDelete, onCreate }) {
+export function Item({ item, onEdit, onDelete, onCreate, handleCreate }) {
     const card = useRef();
     const [ isEditing, setIsEditing ] = useState(false);
     const [ isCreating, setIsCreating ] = useState(false);
@@ -34,8 +34,8 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         const actions = () => {
             return (
                 <>
-                    <button type="button" className="icon icon-item-wrapper icon-edit" onClick={() => setIsEditing(true)}></button>
-                    <button type="button" className="icon icon-item-wrapper icon-trash" onClick={() => {
+                    <button className="icon icon-item-wrapper icon-edit" onClick={() => setIsEditing(true)}></button>
+                    <button className="icon icon-item-wrapper icon-trash" onClick={() => {
                         onDelete(itemToEdit);
                         card.current.remove();
                     }}></button>
@@ -44,15 +44,16 @@ export function Item({ item, onEdit, onDelete, onCreate }) {
         }
 
         if (isEditing) {
-            return <button className="btn btn-primary" onClick={() => {
+            return <button className="btn btn-primary" disabled={ itemToEdit.name.length == 0 ? true : false } onClick={() => {
                 onEdit(itemToEdit);
                 setIsEditing(false);
             }}>Done</button>
         }
 
         if (isCreating) {
-            return <button className="btn btn-primary" onClick={() => {
+            return <button className="btn btn-primary" disabled={ itemToEdit.name.length == 0 ? true : false } onClick={() => {
                 onCreate(itemToEdit);
+                handleCreate(false);
                 setIsCreating(false);
             }}>Create</button>
         }

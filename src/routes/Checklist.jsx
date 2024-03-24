@@ -39,15 +39,19 @@ export function Checklist() {
         setItems(updatedItems);
     }
 
+    function renderPlay() {
+        return (
+            <Link to="checker" state={listItems}>
+                <span className="icon icon-play"></span>
+            </Link>
+        )
+    }
+
     return (
         <>
             <div className="list-header">
                 <h1>{ list.name }</h1>
-                { listItems.length > 0 && (
-                    <Link to="checker" state={listItems}>
-                        <span className="icon icon-play"></span>
-                    </Link>
-                )}
+                { listItems.length > 0 && renderPlay() }
             </div>
            
             <List
