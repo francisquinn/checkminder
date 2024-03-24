@@ -20,7 +20,7 @@ export function Item({ item, onEdit, onDelete, onCreate, handleCreate }) {
             return <span>{itemToEdit.name}</span>
         }
 
-        return <Link to={`/checklist/${itemToEdit.id}`} state={itemToEdit}>{itemToEdit.name}</Link>
+        return <Link to={`/checkminder/${itemToEdit.id}`} state={itemToEdit}>{itemToEdit.name}</Link>
     }
 
     function handleItemToEdit(e) {

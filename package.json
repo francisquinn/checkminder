@@ -1,6 +1,6 @@
 {
-  "homepage": "https://francisquinn.github.io/checklist",
-  "name": "checklist",
+  "homepage": "https://francisquinn.github.io/checkminder",
+  "name": "checkminder",
   "private": true,
   "version": "0.0.0",
   "type": "module",

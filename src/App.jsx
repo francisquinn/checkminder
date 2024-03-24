@@ -18,10 +18,10 @@ export default function App() {
 		<>
 			<main style={isChecker ? { height: '100%' } : { height: 'auto' }}>
 				<Routes>
-					<Route path="/checklist" element={<Home />}></Route>
-					<Route path="/checklist/settings" element={<Settings />}></Route>
-					<Route path="/checklist/:list_id" element={<Checklist />}></Route>
-					<Route path="/checklist/:list_id/checker" element={<Checker handleFooterActions={handleFooterActions} />}></Route>
+					<Route path="/checkminder/" element={<Home />}></Route>
+					<Route path="/checkminder/settings" element={<Settings />}></Route>
+					<Route path="/checkminder/:list_id" element={<Checklist />}></Route>
+					<Route path="/checkminder/:list_id/checker" element={<Checker handleFooterActions={handleFooterActions} />}></Route>
 					<Route path="*" element={<Error />}></Route>
 				</Routes>
 			</main>
