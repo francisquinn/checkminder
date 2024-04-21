@@ -29,7 +29,7 @@ React, Vite and a touch of CSS
 ## Installation
 To install Checkminder simply fork this repo then run the command
 ```
-npm init
+npm install
 ```
 Then to start the development server run:
 ```
