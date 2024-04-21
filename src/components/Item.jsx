@@ -36,6 +36,8 @@ export function Item({ item, onEdit, onDelete, onCreate, handleCreate }) {
                 <>
                     <button className="icon icon-item-wrapper icon-edit" onClick={() => setIsEditing(true)}></button>
                     <button className="icon icon-item-wrapper icon-trash" onClick={() => {
+                        if (!window.confirm(`Are you sure you want to delete ${itemToEdit.name}?`)) return;
+                        
                         onDelete(itemToEdit);
                         card.current.remove();
                     }}></button>

@@ -5,8 +5,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d dist",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -27,5 +27,9 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "gh-pages": "^6.1.1",
     "vite": "^5.0.8"
-  }
+  },
+  "description": "The motivation behind building this project was to have an application that could keep track of the items I needed to pack, primarily for my gym bag. Before I used a basic checklist editor but found it tedious having to uncheck all the items before following the list and checking them all again! Hence, the idea of simplifying this daily task was born.",
+  "main": "vite.config.js",
+  "author": "",
+  "license": "ISC"
 }
