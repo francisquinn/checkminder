@@ -1,6 +1,4 @@
 # Checkminder
-Keep your mind in check using Checkminder.
-
 The motivation behind building this project was to have an application that could keep track of the items I needed to pack, primarily for my gym bag. Before I used a basic checklist editor but found it tedious having to uncheck all the items before following the list and checking them all again! Hence, the idea of simplifying this daily task was born.
 
 **Check it out**: <https://francisquinn.github.io/checkminder/>
