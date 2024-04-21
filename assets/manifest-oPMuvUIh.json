@@ -1,0 +1,15 @@
+{
+    "name": "Checkminder",
+    "short_name": "Checkminder",
+    "start_url": "/checkminder",
+    "theme_color": "#ffffff",
+    "scope": "/checkminder",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "src/images/cm-logo-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

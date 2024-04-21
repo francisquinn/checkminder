@@ -1,8 +1,0 @@
-{
-    "name": "Checkminder",
-    "short_name": "Checkminder",
-    "start_url": "/checkminder",
-    "theme_color": "#ffffff",
-    "scope": "/checkminder",
-    "display": "standalone"
-}
