@@ -1,2 +1,3 @@
 [x] - Cut off checklist name if too long
 [] - Fix flashes between page transitions
+[] - Service worker
