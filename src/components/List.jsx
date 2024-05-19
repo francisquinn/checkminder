@@ -5,10 +5,7 @@ export function List({ items, listId, onDelete, onCreate, onEdit }) {
     const [ listItems, setListItems ] = useState(items);
     const [ isCreating, setIsCreating ] = useState(false);
 
-    useLayoutEffect(() => {
-        console.log(items)
-        setListItems(items)
-    }, [items]);
+    useLayoutEffect(() => setListItems(items), [items]);
 
     function generateListId() {
         return Math.random().toString(36).substring(2, 7);
