@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Item } from "./Item";
 
 export function List({ items, listId, onDelete, onCreate, onEdit }) {
     const [ listItems, setListItems ] = useState(items);
     const [ isCreating, setIsCreating ] = useState(false);
 
-    useEffect(() => setListItems(items), [items]);
+    useLayoutEffect(() => {
+        console.log(items)
+        setListItems(items)
+    }, [items]);
 
     function generateListId() {
         return Math.random().toString(36).substring(2, 7);

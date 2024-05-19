@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export function Checker({ handleFooterActions }) {
@@ -9,7 +9,7 @@ export function Checker({ handleFooterActions }) {
     const [ checkedItems, setCheckedItems ] = useState([]);
     const [ skippedItems, setSkippedItems ] = useState([]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         handleFooterActions();
         return handleFooterActions;
     }, []);

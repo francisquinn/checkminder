@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { List } from "../components/List";
 
 export function Checklist() {
@@ -8,7 +8,7 @@ export function Checklist() {
     const [ list, setList ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
     const [ listItems, setListItems ] = useState([]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const currentItems = items.filter(item => item.list_id == list_id);
         setListItems(currentItems);
         setList(() => list.find(list => list.id == list_id))
