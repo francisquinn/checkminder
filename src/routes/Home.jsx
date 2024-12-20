@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { List } from "../components/List";
+import {ListRdx} from '../features/list/List';
 
 export function Home() {
     const [ lists, setLists ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
@@ -37,6 +38,7 @@ export function Home() {
             <div className="list-header">
                 <h1>Checklists</h1>
             </div>
+            <ListRdx></ListRdx>
             <List 
                 items={lists}
                 onCreate={updateListStorage}
