@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type Item = {
+export type Item = {
   id: string,
   name: string,
   list_id: string
@@ -11,7 +11,7 @@ interface ItemState {
 };
 
 const initialState: ItemState = {
-  items: []
+  items: JSON.parse(localStorage.getItem('items') || '[]') as Item[]
 };
 
 const itemSlice = createSlice({

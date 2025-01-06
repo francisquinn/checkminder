@@ -6,23 +6,29 @@ export type List = {
 };
 
 interface ListState {
-  lists: List[]
+  lists: List[],
+  isCreating: boolean
 };
 
 const initialState: ListState = {
-  lists: JSON.parse(localStorage.getItem('lists') || '[]') as List[]
+  lists: JSON.parse(localStorage.getItem('lists') || '[]') as List[],
+  isCreating: false
 };
 
 const listSlice = createSlice({
   name: 'item',
   initialState,
   reducers: {
-    addList: (state, action) => {
-      console.log(state, action);
+    create: (state, action) => {
+      localStorage.setItem('lists', JSON.stringify([...state.lists, action.payload]));
+      state.lists.push(action.payload);
+    },
+    isCreating: (state) => {
+      state.isCreating = true;
     }
   }
 });
 
-export const { addList } = listSlice.actions;
+export const { isCreating, create } = listSlice.actions;
 
 export default listSlice.reducer;

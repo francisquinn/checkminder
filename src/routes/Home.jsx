@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { List } from "../components/List";
 import {ListRdx} from '../features/list/List';
+import {ItemRdx} from '../features/item/Item';
 
 export function Home() {
     const [ lists, setLists ] = useState(JSON.parse(localStorage.getItem('lists')) ?? []);
@@ -39,11 +40,12 @@ export function Home() {
                 <h1>Checklists</h1>
             </div>
             <ListRdx></ListRdx>
-            <List 
+          
+            {/* <List 
                 items={lists}
                 onCreate={updateListStorage}
                 onDelete={removeList}
-                onEdit={editList} />
+                onEdit={editList} /> */}
         </>
     );
 }
