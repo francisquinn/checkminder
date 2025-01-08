@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function App() {
   const [isChecker, setIsChecker] = useState(false);
-
+  
   function handleFooterActions() {
     setIsChecker(isChecker => !isChecker);
   }
@@ -20,8 +20,8 @@ export default function App() {
         <Routes>
           <Route path="/checkminder/" element={<Home />}></Route>
           <Route path="/checkminder/settings" element={<Settings />}></Route>
-          <Route path="/checkminder/:list_id" element={<Checklist />}></Route>
-          <Route path="/checkminder/:list_id/checker" element={<Checker handleFooterActions={handleFooterActions} />}></Route>
+          <Route path="/checkminder/:listId" element={<Checklist />}></Route>
+          <Route path="/checkminder/:listId/checker" element={<Checker handleFooterActions={handleFooterActions} />}></Route>
           <Route path="*" element={<Error />}></Route>
         </Routes>
       </main>

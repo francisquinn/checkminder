@@ -1,23 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { isCreating } from "../list/listSlice";
+import { isCreatingList } from "../core/coreSlice";
 import { RootState } from "../../app/store";
-import { ItemRdx } from "./Item";
+import { Item } from "./Item";
 
-export function Create () {
-  const listState = useSelector((state: RootState) => state.list);
+export function Create() {
+  const listState = useSelector((state: RootState) => state.core);
   const dispatch = useDispatch();
 
   function renderCreateButton() {
-    return !listState.isCreating && (      
-        <button className="btn btn-secondary btn-create" onClick={() => dispatch(isCreating())}>
-          <span className="icon icon-plus"></span>
-          Create item
-        </button>
+    return !listState.isCreating && (
+      <button className="btn btn-secondary btn-create" onClick={() => dispatch(isCreatingList(true))}>
+        <span className="icon icon-plus"></span>
+        Create item
+      </button>
     );
   }
 
   function renderItemInput() {
-    return listState.isCreating && <ItemRdx isCreating={listState.isCreating}></ItemRdx>;
+    return listState.isCreating && <Item></Item>;
   }
 
   return (

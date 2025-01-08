@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import itemReducer from '../features/item/itemSlice';
-import listReducer from '../features/list/listSlice';
+import coreReducer from '../features/core/coreSlice';
 
 export const store = configureStore({
   reducer: {
-    item: itemReducer,
-    list: listReducer
+    core: coreReducer
   }
 });
 

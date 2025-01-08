@@ -1,21 +1,14 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { List } from "./listSlice";
-import { ReactElement } from "react";
-import { ItemRdx } from "../item/Item";
+import { Item } from "../item/Item";
 import { Create } from "../item/Creare";
 
-export function ListRdx() {
-  const listState = useSelector((state: RootState) => state.list);
-
+export function List({ items }) {
   return (
     <>
       <ul className="list">
-        {listState.lists.map((list: List): ReactElement =>
-          <ItemRdx key={list.id} item={list}></ItemRdx>
+        {items.map((item) =>
+          <Item key={item.id} item={item}></Item>
         )}
-      </ul>     
-
+      </ul>
       <Create></Create> 
     </>
   );
