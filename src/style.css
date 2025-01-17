@@ -53,6 +53,15 @@ nav ul {
   list-style-type: none;
 }
 
+nav ul li {
+  width: 30%;
+  text-align: center;
+}
+
+nav ul li a {
+  width: 100%;
+}
+
 /* list */
 
 h1 {

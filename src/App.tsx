@@ -4,6 +4,7 @@ import { Checklist } from "./routes/Checklist";
 import { Home } from "./routes/Home";
 import { Error } from "./routes/Error";
 import { Checker } from "./routes/Checker";
+import { Footer } from "./components/Footer";
 import { useSelector } from "react-redux";
 import { selectIsChecking } from "./features/core/coreSlice";
 
@@ -21,7 +22,7 @@ export default function App() {
           <Route path="*" element={<Error />}></Route>
         </Routes>
       </main>
-      {/* <Footer isChecker={isChecker} /> */}
+      <Footer />
     </>
   )
 }
