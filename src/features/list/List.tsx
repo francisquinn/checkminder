@@ -1,15 +1,35 @@
-import { Item } from "../item/Item";
-import { Create } from "../item/Creare";
+import { Item } from "./Item";
+import { Create } from "./Create";
+import { Entry } from "../core/coreSlice";
+import { ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { selectIsCreating } from "../core/coreSlice";
 
 export function List({ items }) {
-  return (
-    <>
+  const isCreating = useSelector(selectIsCreating);
+
+  function renderItems(): ReactNode {
+    return items.length > 0 ? (
       <ul className="list">
-        {items.map((item) =>
+        {items.map((item: Entry) =>
           <Item key={item.id} item={item}></Item>
         )}
       </ul>
-      <Create></Create> 
+    ) : (
+      renderEmptyList()
+    );
+  }
+
+  function renderEmptyList(): ReactNode {
+    if (!isCreating) {
+      return <p>This list has no items :(</p>;
+    }
+  }
+
+  return (
+    <>
+      {renderItems()}
+      <Create></Create>
     </>
   );
 }

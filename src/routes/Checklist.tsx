@@ -2,15 +2,16 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectListById, selectListItems, setCurrentListId } from "../features/core/coreSlice";
 import { List } from "../features/list/List";
-import { useEffect } from "react";
+import { ReactNode, useLayoutEffect } from "react";
+import { RootState } from "../app/store";
 
 export function Checklist() {
   const { listId } = useParams();
-  const items = useSelector(state => selectListItems(state, listId));
-  const list = useSelector(state => selectListById(state, listId));
+  const items = useSelector((state: RootState) => selectListItems(state, listId || ''));
+  const list = useSelector((state: RootState) => selectListById(state, listId || ''));
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(setCurrentListId(listId));
 
     return () => {
@@ -18,10 +19,9 @@ export function Checklist() {
     }
   }, [listId])
 
-  function renderPlay() {
-    // state={listItems}
+  function renderPlay(): ReactNode {
     return (items.length > 0) && (
-      <Link to="checker"> 
+      <Link className="btn btn-primary btn-icon-only-l" to="checker" state={items}> 
         <span className="icon icon-play"></span>
       </Link>
     )
@@ -30,7 +30,7 @@ export function Checklist() {
   return (
     <>
       <div className="list-header">
-        <h1>{list.name}</h1>
+        <h1>{list?.name}</h1>
         {renderPlay()}
       </div>
       <List items={items}></List>

@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 
+/* 
+  TODO - convert to tsx whenever settings route is ready
+*/
+
 export function Footer({ isChecker }) {
   return (
     <>
