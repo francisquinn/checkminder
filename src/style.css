@@ -147,7 +147,6 @@ h1 {
 .checker-container .checker-actions {
   display: flex;
   justify-content: space-around;
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .checker-items ul {
