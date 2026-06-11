@@ -1,17 +1,21 @@
 import { Item } from "./Item";
 import { Create } from "./Create";
-import { Entry } from "../core/coreSlice";
+import { Checklist, ChecklistItem } from "../core/coreSlice";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { selectIsCreating } from "../core/coreSlice";
 
-export function List({ items }) {
+type ListProps = {
+  items: Checklist[] | ChecklistItem[]
+};
+
+export function List({ items }: ListProps) {
   const isCreating = useSelector(selectIsCreating);
 
   function renderItems(): ReactNode {
     return items.length > 0 ? (
       <ul className="list">
-        {items.map((item: Entry) =>
+        {items.map((item) =>
           <Item key={item.id} item={item}></Item>
         )}
       </ul>

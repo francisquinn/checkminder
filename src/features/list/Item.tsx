@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import {
-  Entry,
+  Checklist,
+  ChecklistItem,
   updateList,
   updateItem,
   createList,
@@ -15,7 +16,7 @@ import { ReactNode, useRef, useState } from "react";
 import { generateId } from "../../utils";
 
 type ItemProps = {
-  item?: Entry
+  item?: Checklist | ChecklistItem
 };
 
 export function Item({ item }: ItemProps) {

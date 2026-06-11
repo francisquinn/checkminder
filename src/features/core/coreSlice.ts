@@ -1,25 +1,30 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-export type Entry = {
+export type Checklist = {
+  id: string,
+  name: string
+};
+
+export type ChecklistItem = {
   id: string,
   name: string,
-  list_id?: string
+  list_id: string
 };
 
 type Entries = 'lists' | 'items';
 
 interface coreState {
-  lists: Entry[],
-  items: Entry[],
+  lists: Checklist[],
+  items: ChecklistItem[],
   currentListId: string,
   isChecking: boolean,
   isCreating: boolean
 };
 
 const initialState: coreState = {
-  lists: JSON.parse(localStorage.getItem('lists') || '[]') as Entry[],
-  items: JSON.parse(localStorage.getItem('items') || '[]') as Entry[],
+  lists: JSON.parse(localStorage.getItem('lists') || '[]') as Checklist[],
+  items: JSON.parse(localStorage.getItem('items') || '[]') as ChecklistItem[],
   currentListId: '',
   isChecking: false,
   isCreating: false
@@ -78,20 +83,15 @@ export const {
 } = coreSlice.actions;
 
 // Reducer functions
-const updateEntry = (entries: Entry[], payload: Entry): Entry[] => {
-  return entries.map(entry => {
-    if (entry.id === payload.id) {
-      return { ...entry, name: payload.name };
-    }
-    return entry;
-  });
+const updateEntry = <T extends { id: string; name: string }>(entries: T[], payload: { id: string; name: string }): T[] => {
+  return entries.map(entry => entry.id === payload.id ? { ...entry, name: payload.name } : entry);
 };
 
-const removeEntry = (entries: Entry[], payload: Entry): Entry[] => {
+const removeEntry = <T extends { id: string }>(entries: T[], payload: { id: string }): T[] => {
   return entries.filter(entry => entry.id !== payload.id);
 };
 
-const setLocalStorage = (entryType: Entries, entries: Entry[] | string): void => {
+const setLocalStorage = (entryType: Entries, entries: Checklist[] | ChecklistItem[]): void => {
   localStorage.setItem(entryType, JSON.stringify(entries));
 };
 
@@ -105,16 +105,12 @@ export const selectIsCreating = (state: RootState) => state.core.isCreating;
 
 export const selectListItems = createSelector(
   [selectItems, selectListId],
-  (items, listId): Entry[] => {
-    return items.filter((item: Entry) => item.list_id === listId);
-  }
+  (items, listId): ChecklistItem[] => items.filter(item => item.list_id === listId)
 );
 
 export const selectListById = createSelector(
   [selectLists, selectListId],
-  (lists, listId): Entry | undefined => {
-    return lists.find((list: Entry) => list.id === listId);
-  }
+  (lists, listId): Checklist | undefined => lists.find(list => list.id === listId)
 );
 
 export default coreSlice.reducer;
