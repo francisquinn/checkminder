@@ -1,24 +1,14 @@
-import { ReactNode, useLayoutEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ChecklistItem, isCheckingItems } from "../features/core/coreSlice";
-import { useDispatch } from "react-redux";
+import { ChecklistItem } from "../features/core/coreSlice";
 
 export function Checker() {
   const location = useLocation();
-  const dispatch = useDispatch();
   const items: ChecklistItem[] = location.state;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [checkedItems, setCheckedItems] = useState<ChecklistItem[]>([]);
   const [skippedItems, setSkippedItems] = useState<ChecklistItem[]>([]);
-
-  useLayoutEffect(() => {
-    dispatch(isCheckingItems(true));
-
-    return () => {
-      dispatch(isCheckingItems(false));
-    }
-  }, [])
 
   function checkItem(): void {
     shuffleItems(() => setCheckedItems([...checkedItems, items[index]]));

@@ -1,31 +1,34 @@
-import { useDispatch, useSelector } from "react-redux";
-import { isCreatingList } from "../core/coreSlice";
-import { RootState } from "../../app/store";
-import { Item } from "./Item";
+import { ListRow } from "./ListRow";
+import { ItemRow } from "./ItemRow";
 import { ReactNode } from "react";
-import { selectIsCreating } from "../core/coreSlice";
 
-export function Create() {
-  const isCreating = useSelector(selectIsCreating);
-  const dispatch = useDispatch();
+type CreateProps = {
+  type: 'list' | 'item';
+  isCreating: boolean;
+  onToggle: (val: boolean) => void;
+};
 
+export function Create({ type, isCreating, onToggle }: CreateProps) {
   function renderCreateButton(): ReactNode {
     return !isCreating && (
-      <button className="btn btn-secondary btn-create" onClick={() => dispatch(isCreatingList(true))}>
+      <button className="btn btn-secondary btn-create" onClick={() => onToggle(true)}>
         <span className="icon icon-plus"></span>
-        Create item
+        Add item
       </button>
     );
   }
 
-  function renderItemInput(): ReactNode {
-    return isCreating && <Item></Item>;
+  function renderCreateForm(): ReactNode {
+    if (!isCreating) return null;
+    return type === 'list'
+      ? <ListRow onCreated={() => onToggle(false)} onCancelCreate={() => onToggle(false)} />
+      : <ItemRow onCreated={() => onToggle(false)} onCancelCreate={() => onToggle(false)} />;
   }
 
   return (
     <>
       {renderCreateButton()}
-      {renderItemInput()}
+      {renderCreateForm()}
     </>
   );
 }
