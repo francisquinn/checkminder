@@ -1,39 +1,49 @@
-import { Item } from "./Item";
+import { ListRow } from "./ListRow";
+import { ItemRow } from "./ItemRow";
 import { Create } from "./Create";
 import { Checklist, ChecklistItem } from "../core/coreSlice";
-import { ReactNode } from "react";
-import { useSelector } from "react-redux";
-import { selectIsCreating } from "../core/coreSlice";
+import { ReactNode, useEffect, useState } from "react";
 
 type ListProps = {
-  items: Checklist[] | ChecklistItem[]
+  items: Checklist[] | ChecklistItem[];
+  type: 'list' | 'item';
+  onBusyChange?: (isBusy: boolean) => void;
 };
 
-export function List({ items }: ListProps) {
-  const isCreating = useSelector(selectIsCreating);
+export function List({ items, type, onBusyChange }: ListProps) {
+  const [isCreating, setIsCreating] = useState(false);
+  const [editingIds, setEditingIds] = useState<Set<string>>(new Set());
 
-  function renderItems(): ReactNode {
-    return items.length > 0 ? (
-      <ul className="list">
-        {items.map((item) =>
-          <Item key={item.id} item={item}></Item>
-        )}
-      </ul>
-    ) : (
-      renderEmptyList()
-    );
+  useEffect(() => {
+    onBusyChange?.(isCreating || editingIds.size > 0);
+  }, [isCreating, editingIds]);
+
+  function handleEditingChange(id: string, isEditing: boolean): void {
+    setEditingIds(prev => {
+      const next = new Set(prev);
+      isEditing ? next.add(id) : next.delete(id);
+      return next;
+    });
   }
 
-  function renderEmptyList(): ReactNode {
-    if (!isCreating) {
-      return <p>This list has no items :(</p>;
+  function renderItems(): ReactNode {
+    if (items.length === 0) {
+      return isCreating ? null : <p>This list has no items :(</p>;
     }
+    return (
+      <ul className="list">
+        {type === 'list'
+          ? (items as Checklist[]).map(item => <ListRow key={item.id} item={item} onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)} />)
+          : (items as ChecklistItem[]).map(item => <ItemRow key={item.id} item={item} onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)} />)
+        }
+      </ul>
+    );
   }
 
   return (
     <>
       {renderItems()}
-      <Create></Create>
+      <Create type={type} isCreating={isCreating} onToggle={setIsCreating} />
     </>
   );
 }

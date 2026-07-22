@@ -18,16 +18,12 @@ interface coreState {
   lists: Checklist[],
   items: ChecklistItem[],
   currentListId: string,
-  isChecking: boolean,
-  isCreating: boolean
 };
 
 const initialState: coreState = {
   lists: JSON.parse(localStorage.getItem('lists') || '[]') as Checklist[],
   items: JSON.parse(localStorage.getItem('items') || '[]') as ChecklistItem[],
   currentListId: '',
-  isChecking: false,
-  isCreating: false
 };
 
 const coreSlice = createSlice({
@@ -61,18 +57,10 @@ const coreSlice = createSlice({
     setCurrentListId: (state, action) => {
       state.currentListId = action.payload;
     },
-    isCheckingItems: (state, action) => {
-      state.isChecking = action.payload;
-    },
-    isCreatingList: (state, action) => {
-      state.isCreating = action.payload;
-    }
   }
 });
 
 export const {
-  isCheckingItems,
-  isCreatingList,
   setCurrentListId,
   createList,
   createItem,
@@ -100,8 +88,6 @@ export const selectCore = (state: RootState) => state.core;
 export const selectLists = (state: RootState) => state.core.lists;
 const selectItems = (state: RootState) => state.core.items;
 const selectListId = (_state: RootState, listId: string) => listId;
-export const selectIsChecking = (state: RootState) => state.core.isChecking;
-export const selectIsCreating = (state: RootState) => state.core.isCreating;
 
 export const selectListItems = createSelector(
   [selectItems, selectListId],
