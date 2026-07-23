@@ -20,6 +20,7 @@ const TOUCH_ACTIVATION_CONSTRAINT = { delay: 250, tolerance: 5 };
 export function List({ items, type, onBusyChange }: ListProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [editingIds, setEditingIds] = useState<Set<string>>(new Set());
+  const [openSwipeId, setOpenSwipeId] = useState<string | null>(null);
   const isBusy = isCreating || editingIds.size > 0;
   const dispatch = useDispatch();
 
@@ -38,6 +39,11 @@ export function List({ items, type, onBusyChange }: ListProps) {
       isEditing ? next.add(id) : next.delete(id);
       return next;
     });
+    if (isEditing) setOpenSwipeId(prev => (prev === id ? null : prev));
+  }
+
+  function handleSwipeOpenChange(id: string, isOpen: boolean): void {
+    setOpenSwipeId(isOpen ? id : null);
   }
 
   function handleDragEnd(event: DragEndEvent): void {
@@ -58,12 +64,28 @@ export function List({ items, type, onBusyChange }: ListProps) {
             {type === 'list'
               ? (items as Checklist[]).map(item => (
                   <SortableRow key={item.id} id={item.id} disabled={isBusy}>
-                    {(sortableProps) => <ListRow item={item} onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)} {...sortableProps} />}
+                    {(sortableProps) => (
+                      <ListRow
+                        item={item}
+                        onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)}
+                        isSwipeOpen={openSwipeId === item.id}
+                        onSwipeOpenChange={(isOpen) => handleSwipeOpenChange(item.id, isOpen)}
+                        {...sortableProps}
+                      />
+                    )}
                   </SortableRow>
                 ))
               : (items as ChecklistItem[]).map(item => (
                   <SortableRow key={item.id} id={item.id} disabled={isBusy}>
-                    {(sortableProps) => <ItemRow item={item} onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)} {...sortableProps} />}
+                    {(sortableProps) => (
+                      <ItemRow
+                        item={item}
+                        onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)}
+                        isSwipeOpen={openSwipeId === item.id}
+                        onSwipeOpenChange={(isOpen) => handleSwipeOpenChange(item.id, isOpen)}
+                        {...sortableProps}
+                      />
+                    )}
                   </SortableRow>
                 ))
             }

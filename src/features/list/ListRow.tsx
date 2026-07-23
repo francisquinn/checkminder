@@ -15,16 +15,18 @@ type ListRowProps = {
   sortableStyle?: CSSProperties;
   dragHandleProps?: DragHandleProps;
   isDragging?: boolean;
+  isSwipeOpen?: boolean;
+  onSwipeOpenChange?: (isOpen: boolean) => void;
 };
 
-export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging }: ListRowProps) {
+export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange }: ListRowProps) {
   const dispatch = useDispatch();
 
   return (
     <Row
       name={item?.name}
       isCreateMode={!item}
-      renderLabel={(name) => <Link className="list-item-label" to={`/checkminder/${item!.id}`}>{name}</Link>}
+      renderLabel={(name) => <Link className="list-item-label" to={`/checkminder/${item!.id}`} draggable={false}>{name}</Link>}
       onCreate={(name) => {
         dispatch(createList({ id: generateId(), name }));
         onCreated?.();
@@ -37,6 +39,8 @@ export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sort
       sortableStyle={sortableStyle}
       dragHandleProps={dragHandleProps}
       isDragging={isDragging}
+      isSwipeOpen={isSwipeOpen}
+      onSwipeOpenChange={onSwipeOpenChange}
     />
   );
 }
