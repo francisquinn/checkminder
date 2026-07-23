@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store.js';
 import { Provider } from 'react-redux';
 
-if ('serviceWorker' in navigator) {
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('/checkminder/serviceworker.js', { scope: '/checkminder/' });
 }
 

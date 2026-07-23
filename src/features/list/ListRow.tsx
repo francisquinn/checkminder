@@ -1,24 +1,30 @@
+import { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Checklist, createList, updateList, deleteList } from "../core/coreSlice";
 import { useDispatch } from "react-redux";
 import { generateId } from "../../utils";
 import { Row } from "./Row";
+import { DragHandleProps } from "./SortableRow";
 
 type ListRowProps = {
   item?: Checklist;
   onCreated?: () => void;
   onCancelCreate?: () => void;
   onEditingChange?: (isEditing: boolean) => void;
+  sortableRef?: (node: HTMLElement | null) => void;
+  sortableStyle?: CSSProperties;
+  dragHandleProps?: DragHandleProps;
+  isDragging?: boolean;
 };
 
-export function ListRow({ item, onCreated, onCancelCreate, onEditingChange }: ListRowProps) {
+export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging }: ListRowProps) {
   const dispatch = useDispatch();
 
   return (
     <Row
       name={item?.name}
       isCreateMode={!item}
-      renderLabel={(name) => <Link to={`/checkminder/${item!.id}`}>{name}</Link>}
+      renderLabel={(name) => <Link className="list-item-label" to={`/checkminder/${item!.id}`}>{name}</Link>}
       onCreate={(name) => {
         dispatch(createList({ id: generateId(), name }));
         onCreated?.();
@@ -27,6 +33,10 @@ export function ListRow({ item, onCreated, onCancelCreate, onEditingChange }: Li
       onDelete={() => dispatch(deleteList(item))}
       onEditingChange={onEditingChange}
       onCancelCreate={onCancelCreate}
+      sortableRef={sortableRef}
+      sortableStyle={sortableStyle}
+      dragHandleProps={dragHandleProps}
+      isDragging={isDragging}
     />
   );
 }

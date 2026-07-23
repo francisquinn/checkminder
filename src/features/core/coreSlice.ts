@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { arrayMove } from "@dnd-kit/sortable";
 import { RootState } from "../../app/store";
 
 export type Checklist = {
@@ -57,6 +58,27 @@ const coreSlice = createSlice({
     setCurrentListId: (state, action) => {
       state.currentListId = action.payload;
     },
+    reorderLists: (state, action) => {
+      const { activeId, overId } = action.payload;
+      const oldIndex = state.lists.findIndex(list => list.id === activeId);
+      const newIndex = state.lists.findIndex(list => list.id === overId);
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      state.lists = arrayMove(state.lists, oldIndex, newIndex);
+      setLocalStorage('lists', state.lists);
+    },
+    reorderItems: (state, action) => {
+      const { activeId, overId } = action.payload;
+      const listId = state.items.find(item => item.id === activeId)?.list_id;
+      if (!listId) return;
+      const listItems = state.items.filter(item => item.list_id === listId);
+      const oldIndex = listItems.findIndex(item => item.id === activeId);
+      const newIndex = listItems.findIndex(item => item.id === overId);
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      const reordered = arrayMove(listItems, oldIndex, newIndex);
+      let cursor = 0;
+      state.items = state.items.map(item => item.list_id === listId ? reordered[cursor++] : item);
+      setLocalStorage('items', state.items);
+    },
   }
 });
 
@@ -67,7 +89,9 @@ export const {
   updateList,
   updateItem,
   deleteList,
-  deleteItem
+  deleteItem,
+  reorderLists,
+  reorderItems
 } = coreSlice.actions;
 
 // Reducer functions
