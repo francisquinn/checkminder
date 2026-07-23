@@ -1,15 +1,18 @@
 :root {
   --grey: #f4f4f4;
   --lightgrey: #fafafa;
-  --blue: #6666FF;
+  --blue: #6666ff;
   --black: #4c4c4c;
+  --red: #ff3b30;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 html {
@@ -103,6 +106,55 @@ h1 {
   font-size: 16px;
 }
 
+.list-item.is-swipeable {
+  display: block;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-item-edit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  padding-right: 10px;
+  line-height: 45px;
+  background-color: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+  z-index: 2;
+}
+
+.list-item.is-editing .list-item-edit {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.list-item.is-editing > .list-actions {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.list-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  line-height: 45px;
+  background-color: white;
+  position: relative;
+  z-index: 1;
+  touch-action: pan-y;
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  user-select: none;
+}
+
 .list-item-label {
   display: block;
   flex: 1;
@@ -137,6 +189,17 @@ h1 {
   gap: 5px;
 }
 
+.list-item.is-swipeable > .list-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  padding-right: 10px;
+  gap: 10px;
+  z-index: 0;
+  transition: opacity 0.15s ease;
+}
+
 .list-item.is-dragging {
   opacity: 0.6;
   background-color: var(--grey);
@@ -155,6 +218,10 @@ h1 {
 .list-actions .btn {
   height: 40px;
   line-height: normal;
+}
+
+.list-actions .btn.btn-compact {
+  height: 28px;
 }
 
 /* checker */
@@ -205,6 +272,11 @@ h1 {
   width: 50px;
 }
 
+.btn-compact {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -220,9 +292,49 @@ h1 {
   color: var(--blue);
 }
 
+.btn-default {
+  background-color: var(--grey);
+  color: var(--black);
+}
+
+.btn-danger {
+  background-color: var(--red);
+  color: white;
+}
+
 .btn-create {
   padding: 10px 0;
   line-height: 45px;
+}
+
+@keyframes fade-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-up-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.list-item.is-create-row {
+  animation: fade-slide-down 0.15s ease-out;
+}
+
+.list-item.is-create-row.is-leaving {
+  animation: fade-slide-up-out 0.15s ease-in forwards;
 }
 
 .btn-checker {
@@ -239,14 +351,6 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 20px 20px;
-}
-
-.icon-edit {
-  background-image: url(./icons/pen-solid.svg);
-}
-
-.icon-trash {
-  background-image: url(./icons/trash-solid.svg);
 }
 
 .icon-close {

@@ -14,9 +14,11 @@ type ItemRowProps = {
   sortableStyle?: CSSProperties;
   dragHandleProps?: DragHandleProps;
   isDragging?: boolean;
+  isSwipeOpen?: boolean;
+  onSwipeOpenChange?: (isOpen: boolean) => void;
 };
 
-export function ItemRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging }: ItemRowProps) {
+export function ItemRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange }: ItemRowProps) {
   const core = useSelector(selectCore);
   const dispatch = useDispatch();
 
@@ -37,6 +39,8 @@ export function ItemRow({ item, onCreated, onCancelCreate, onEditingChange, sort
       sortableStyle={sortableStyle}
       dragHandleProps={dragHandleProps}
       isDragging={isDragging}
+      isSwipeOpen={isSwipeOpen}
+      onSwipeOpenChange={onSwipeOpenChange}
     />
   );
 }
