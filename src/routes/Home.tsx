@@ -7,7 +7,7 @@ export function Home() {
   return (
     <>
       <div className="list-header">
-        <h1>Checklists hi</h1>
+        <h1>Checklists</h1>
       </div>
       <List items={lists} type="list" />
     </>

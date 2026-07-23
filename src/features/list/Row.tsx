@@ -1,5 +1,6 @@
-import { KeyboardEvent, ReactNode, useEffect, useState } from "react";
+import { CSSProperties, KeyboardEvent, ReactNode, useEffect, useState } from "react";
 import { useEditableRow } from "./useEditableRow";
+import { DragHandleProps } from "./SortableRow";
 
 const MIN_NAME_LENGTH = 3;
 
@@ -12,9 +13,13 @@ type RowProps = {
   onDelete: () => void;
   onEditingChange?: (isEditing: boolean) => void;
   onCancelCreate?: () => void;
+  sortableRef?: (node: HTMLElement | null) => void;
+  sortableStyle?: CSSProperties;
+  dragHandleProps?: DragHandleProps;
+  isDragging?: boolean;
 };
 
-export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, onUpdate, onDelete, onEditingChange, onCancelCreate }: RowProps) {
+export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, onUpdate, onDelete, onEditingChange, onCancelCreate, sortableRef, sortableStyle, dragHandleProps, isDragging }: RowProps) {
   const { inputRef, isEditing, setIsEditing, name, setName } = useEditableRow(initialName);
   const isInputActive = isEditing || isCreateMode;
   const [isValid, setIsValid] = useState(!isCreateMode);
@@ -34,8 +39,11 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
   }
 
   function handleInputKeyDown(e: KeyboardEvent<HTMLInputElement>): void {
-    if (e.key === 'Escape' && isCreateMode) {
+    if (e.key !== 'Escape') return;
+    if (isCreateMode) {
       onCancelCreate?.();
+    } else {
+      setIsEditing(false);
     }
   }
 
@@ -57,13 +65,18 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
 
     if (isEditing) {
       return (
-        <button className="btn btn-primary" disabled={!isValid} onClick={() => {
-          const value = inputRef.current?.value.trim() ?? '';
-          if (value.length < MIN_NAME_LENGTH) return;
-          setName(value);
-          setIsEditing(false);
-          onUpdate(value);
-        }}>Done</button>
+        <>
+          <button className="btn btn-primary" disabled={!isValid} onClick={() => {
+            const value = inputRef.current?.value.trim() ?? '';
+            if (value.length < MIN_NAME_LENGTH) return;
+            setName(value);
+            setIsEditing(false);
+            onUpdate(value);
+          }}>Done</button>
+          <button className="btn btn-icon-only" onClick={() => setIsEditing(false)}>
+            <span className="icon icon-close"></span>
+          </button>
+        </>
       );
     }
 
@@ -83,7 +96,19 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
   }
 
   return (
-    <li className="list-item">
+    <li className={`list-item${isDragging ? ' is-dragging' : ''}`} ref={sortableRef} style={sortableStyle}>
+      {!isInputActive && dragHandleProps && (
+        <button
+          type="button"
+          className="btn btn-icon-only drag-handle"
+          ref={dragHandleProps.ref}
+          {...dragHandleProps.attributes}
+          {...dragHandleProps.listeners}
+          aria-label="Reorder"
+        >
+          <span className="icon icon-grip"></span>
+        </button>
+      )}
       {!isInputActive && renderLabel(name)}
       {isInputActive && <input type="text" autoFocus ref={inputRef} defaultValue={isEditing ? name : ''} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />}
       <div className="list-actions">
