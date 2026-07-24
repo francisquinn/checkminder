@@ -42,6 +42,7 @@ nav {
   position: sticky;
   left: 0;
   bottom: 0;
+  z-index: 3;
   width: 100%;
   margin-top: auto;
   background-color: white;
@@ -91,6 +92,7 @@ h1 {
   display: flex;
   position: sticky;
   top: 0;
+  z-index: 3;
   padding-top: 15px;
   background-color: #ffffff;
   justify-content: space-between;
@@ -224,6 +226,8 @@ h1 {
   touch-action: none;
   cursor: grab;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .drag-handle:active {
@@ -435,8 +439,8 @@ h1 {
   height: 25px;
 }
 
-.icon-nav.icon-list {
-  background-image: url(./icons/list-ul-solid.svg);
+.icon-nav.icon-home {
+  background-image: url(./icons/house-solid.svg);
 }
 
 .icon-nav.icon-gear {

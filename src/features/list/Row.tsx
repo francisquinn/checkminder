@@ -10,6 +10,23 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
+const KEYBOARD_SCROLL_MARGIN = 16;
+
+function scrollAboveKeyboard(el: HTMLElement | null): () => void {
+  if (!el) return () => {};
+  const vv = window.visualViewport;
+  function adjust(): void {
+    const rect = el!.getBoundingClientRect();
+    const visibleBottom = vv ? vv.height + vv.offsetTop : window.innerHeight;
+    if (rect.bottom > visibleBottom - KEYBOARD_SCROLL_MARGIN) {
+      window.scrollBy({ top: rect.bottom - (visibleBottom - KEYBOARD_SCROLL_MARGIN), behavior: 'smooth' });
+    }
+  }
+  adjust();
+  vv?.addEventListener('resize', adjust);
+  return () => vv?.removeEventListener('resize', adjust);
+}
+
 type RowProps = {
   name?: string;
   isCreateMode: boolean;
@@ -60,12 +77,22 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
     setActionsWidth(actionsRef.current?.offsetWidth ?? 0);
   }, []);
 
+  useEffect(() => {
+    if (!isCreateMode) return;
+    return scrollAboveKeyboard(inputRef.current);
+  }, [isCreateMode]);
+
   useLayoutEffect(() => {
     if (!isEditing || !inputRef.current) return;
     inputRef.current.value = name ?? '';
     inputRef.current.focus();
     inputRef.current.select();
     setIsValid((name?.trim().length ?? 0) >= MIN_NAME_LENGTH);
+  }, [isEditing]);
+
+  useEffect(() => {
+    if (!isEditing) return;
+    return scrollAboveKeyboard(inputRef.current);
   }, [isEditing]);
 
   const restX = isSwipeOpen ? -actionsWidth : 0;

@@ -23,6 +23,7 @@ export default function App() {
     if (transitionStage !== 'fade-out') return;
     setDisplayLocation(location);
     setTransitionStage('fade-in');
+    window.scrollTo(0, 0);
   }
 
   return (
