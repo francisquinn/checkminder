@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 export default function App() {
   const location = useLocation();
   const [displayLocation, setDisplayLocation] = useState(location);
-  const [transitionStage, setTransitionStage] = useState<'fade-in' | 'fade-out'>('fade-in');
+  const [transitionStage, setTransitionStage] = useState<'none' | 'fade-in' | 'fade-out'>('none');
   const isChecking = !!matchPath("/checkminder/:listId/checker", displayLocation.pathname);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function App() {
   return (
     <>
       <main style={isChecking ? { height: '100%' } : { height: 'auto' }}>
-        <div className={`route-transition ${transitionStage}`} onAnimationEnd={handleAnimationEnd}>
+        <div className={`route-transition${transitionStage === 'none' ? '' : ' ' + transitionStage}`} onAnimationEnd={handleAnimationEnd}>
           <Routes location={displayLocation}>
             <Route path="/checkminder/" element={<Home />}></Route>
             <Route path="/checkminder/settings" element={<Settings />}></Route>
