@@ -17,9 +17,11 @@ type ListRowProps = {
   isDragging?: boolean;
   isSwipeOpen?: boolean;
   onSwipeOpenChange?: (isOpen: boolean) => void;
+  isEntering?: boolean;
+  onEnterAnimationEnd?: () => void;
 };
 
-export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange }: ListRowProps) {
+export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange, isEntering, onEnterAnimationEnd }: ListRowProps) {
   const dispatch = useDispatch();
 
   return (
@@ -41,6 +43,8 @@ export function ListRow({ item, onCreated, onCancelCreate, onEditingChange, sort
       isDragging={isDragging}
       isSwipeOpen={isSwipeOpen}
       onSwipeOpenChange={onSwipeOpenChange}
+      isEntering={isEntering}
+      onEnterAnimationEnd={onEnterAnimationEnd}
     />
   );
 }

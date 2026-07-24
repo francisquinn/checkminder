@@ -1,6 +1,6 @@
 import { ListRow } from "./ListRow";
 import { ItemRow } from "./ItemRow";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 type CreateProps = {
   type: 'list' | 'item';
@@ -9,9 +9,16 @@ type CreateProps = {
 };
 
 export function Create({ type, isCreating, onToggle }: CreateProps) {
+  const wasCreatingRef = useRef(isCreating);
+  const justClosed = wasCreatingRef.current && !isCreating;
+
+  useEffect(() => {
+    wasCreatingRef.current = isCreating;
+  }, [isCreating]);
+
   function renderCreateButton(): ReactNode {
     return !isCreating && (
-      <button className="btn btn-secondary btn-create" onClick={() => onToggle(true)}>
+      <button className={`btn btn-secondary btn-create${justClosed ? ' is-entering' : ''}`} onClick={() => onToggle(true)}>
         <span className="icon icon-plus"></span>
         Add item
       </button>

@@ -3,7 +3,7 @@ import { ItemRow } from "./ItemRow";
 import { Create } from "./Create";
 import { SortableRow } from "./SortableRow";
 import { Checklist, ChecklistItem, reorderItems, reorderLists } from "../core/coreSlice";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DndContext, DragEndEvent, MouseSensor, TouchSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -21,8 +21,30 @@ export function List({ items, type, onBusyChange }: ListProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [editingIds, setEditingIds] = useState<Set<string>>(new Set());
   const [openSwipeId, setOpenSwipeId] = useState<string | null>(null);
+  const [enteringIds, setEnteringIds] = useState<Set<string>>(new Set());
+  const prevIdsRef = useRef<Set<string> | null>(null);
   const isBusy = isCreating || editingIds.size > 0;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentIds = new Set(items.map(item => item.id));
+    if (prevIdsRef.current) {
+      const addedIds = items.filter(item => !prevIdsRef.current!.has(item.id)).map(item => item.id);
+      if (addedIds.length > 0) {
+        setEnteringIds(prev => new Set([...prev, ...addedIds]));
+      }
+    }
+    prevIdsRef.current = currentIds;
+  }, [items]);
+
+  function handleEnterAnimationEnd(id: string): void {
+    setEnteringIds(prev => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  }
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: MOUSE_ACTIVATION_CONSTRAINT }),
@@ -70,6 +92,8 @@ export function List({ items, type, onBusyChange }: ListProps) {
                         onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)}
                         isSwipeOpen={openSwipeId === item.id}
                         onSwipeOpenChange={(isOpen) => handleSwipeOpenChange(item.id, isOpen)}
+                        isEntering={enteringIds.has(item.id)}
+                        onEnterAnimationEnd={() => handleEnterAnimationEnd(item.id)}
                         {...sortableProps}
                       />
                     )}
@@ -83,6 +107,8 @@ export function List({ items, type, onBusyChange }: ListProps) {
                         onEditingChange={(isEditing) => handleEditingChange(item.id, isEditing)}
                         isSwipeOpen={openSwipeId === item.id}
                         onSwipeOpenChange={(isOpen) => handleSwipeOpenChange(item.id, isOpen)}
+                        isEntering={enteringIds.has(item.id)}
+                        onEnterAnimationEnd={() => handleEnterAnimationEnd(item.id)}
                         {...sortableProps}
                       />
                     )}
