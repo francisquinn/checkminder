@@ -104,11 +104,10 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
   }
 
   function handleRowAnimationEnd(): void {
+    onEnterAnimationEnd?.();
     if (isDeleting) {
       onDelete();
-      return;
     }
-    onEnterAnimationEnd?.();
   }
 
   function handleInputKeyDown(e: KeyboardEvent<HTMLInputElement>): void {
@@ -189,6 +188,7 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
             ref={dragHandleProps.ref}
             {...dragHandleProps.attributes}
             {...dragHandleProps.listeners}
+            onPointerDownCapture={(e) => e.stopPropagation()}
             aria-label="Reorder"
           >
             <span className="icon icon-grip"></span>
