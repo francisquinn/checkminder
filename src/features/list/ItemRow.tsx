@@ -16,9 +16,11 @@ type ItemRowProps = {
   isDragging?: boolean;
   isSwipeOpen?: boolean;
   onSwipeOpenChange?: (isOpen: boolean) => void;
+  isEntering?: boolean;
+  onEnterAnimationEnd?: () => void;
 };
 
-export function ItemRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange }: ItemRowProps) {
+export function ItemRow({ item, onCreated, onCancelCreate, onEditingChange, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange, isEntering, onEnterAnimationEnd }: ItemRowProps) {
   const core = useSelector(selectCore);
   const dispatch = useDispatch();
 
@@ -41,6 +43,8 @@ export function ItemRow({ item, onCreated, onCancelCreate, onEditingChange, sort
       isDragging={isDragging}
       isSwipeOpen={isSwipeOpen}
       onSwipeOpenChange={onSwipeOpenChange}
+      isEntering={isEntering}
+      onEnterAnimationEnd={onEnterAnimationEnd}
     />
   );
 }

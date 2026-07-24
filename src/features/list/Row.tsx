@@ -25,9 +25,11 @@ type RowProps = {
   isDragging?: boolean;
   isSwipeOpen?: boolean;
   onSwipeOpenChange?: (isOpen: boolean) => void;
+  isEntering?: boolean;
+  onEnterAnimationEnd?: () => void;
 };
 
-export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, onUpdate, onDelete, onEditingChange, onCancelCreate, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange }: RowProps) {
+export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, onUpdate, onDelete, onEditingChange, onCancelCreate, sortableRef, sortableStyle, dragHandleProps, isDragging, isSwipeOpen, onSwipeOpenChange, isEntering, onEnterAnimationEnd }: RowProps) {
   const { inputRef, isEditing, setIsEditing, name, setName } = useEditableRow(initialName);
   const [isValid, setIsValid] = useState(!isCreateMode);
   const actionsRef = useRef<HTMLDivElement>(null);
@@ -35,6 +37,7 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
   const [dragX, setDragX] = useState<number | null>(null);
   const suppressNextClickRef = useRef(false);
   const [isCreateLeaving, setIsCreateLeaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const pendingCloseActionRef = useRef<(() => void) | null>(null);
 
   function closeCreate(action: () => void): void {
@@ -100,6 +103,14 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
     setIsValid((inputRef.current?.value.trim().length ?? 0) >= MIN_NAME_LENGTH);
   }
 
+  function handleRowAnimationEnd(): void {
+    if (isDeleting) {
+      onDelete();
+      return;
+    }
+    onEnterAnimationEnd?.();
+  }
+
   function handleInputKeyDown(e: KeyboardEvent<HTMLInputElement>): void {
     if (e.key !== 'Escape') return;
     if (isCreateMode) {
@@ -133,7 +144,12 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
   }
 
   return (
-    <li className={`list-item is-swipeable${isDragging ? ' is-dragging' : ''}${isEditing ? ' is-editing' : ''}`} ref={sortableRef} style={sortableStyle}>
+    <li
+      className={`list-item is-swipeable${isDragging ? ' is-dragging' : ''}${isEditing ? ' is-editing' : ''}${isEntering ? ' is-entering' : ''}${isDeleting ? ' is-leaving' : ''}`}
+      ref={sortableRef}
+      style={sortableStyle}
+      onAnimationEnd={handleRowAnimationEnd}
+    >
       <div className="list-item-edit">
         <input type="text" ref={inputRef} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
         <div className="list-actions">
@@ -155,7 +171,7 @@ export function Row({ name: initialName, isCreateMode, renderLabel, onCreate, on
         </button>
         <button className="btn btn-danger btn-compact" onClick={() => {
           if (!window.confirm(`Are you sure you want to delete ${name}?`)) return;
-          onDelete();
+          setIsDeleting(true);
         }}>
           Delete
         </button>
