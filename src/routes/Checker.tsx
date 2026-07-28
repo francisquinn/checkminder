@@ -2,6 +2,8 @@ import { ReactNode, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ChecklistItem } from "../features/core/coreSlice";
 
+type ItemTransition = 'none' | 'leave-left' | 'leave-right' | 'enter-left' | 'enter-right';
+
 export function Checker() {
   const location = useLocation();
   const items: ChecklistItem[] = location.state;
@@ -9,35 +11,69 @@ export function Checker() {
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [checkedItems, setCheckedItems] = useState<ChecklistItem[]>([]);
   const [skippedItems, setSkippedItems] = useState<ChecklistItem[]>([]);
+  const [itemTransition, setItemTransition] = useState<ItemTransition>('none');
+  const [pendingResult, setPendingResult] = useState<'check' | 'skip' | null>(null);
 
   function checkItem(): void {
-    shuffleItems(() => setCheckedItems([...checkedItems, items[index]]));
+    if (itemTransition !== 'none') return;
+    setPendingResult('check');
+    setItemTransition('leave-right');
   }
 
   function skipItem(): void {
-    shuffleItems(() => setSkippedItems([...skippedItems, items[index]]));
+    if (itemTransition !== 'none') return;
+    setPendingResult('skip');
+    setItemTransition('leave-left');
   }
 
-  function shuffleItems(setItems: Function): void {
-    setItems();
+  function handleItemAnimationEnd(e: React.AnimationEvent<HTMLHeadingElement>): void {
+    e.stopPropagation();
 
-    if (index < items.length - 1) {
-      setIndex(index + 1)
+    if (itemTransition === 'leave-left' || itemTransition === 'leave-right') {
+      if (pendingResult === 'check') {
+        setCheckedItems(prev => [...prev, items[index]]);
+      } else if (pendingResult === 'skip') {
+        setSkippedItems(prev => [...prev, items[index]]);
+      }
+
+      const enterFrom = itemTransition === 'leave-right' ? 'enter-left' : 'enter-right';
+      setPendingResult(null);
+
+      if (index < items.length - 1) {
+        setIndex(prev => prev + 1);
+        setItemTransition(enterFrom);
+      } else {
+        setIsFinished(true);
+        setItemTransition('none');
+      }
+    } else {
+      setItemTransition('none');
     }
-    else {
-      setIsFinished(true);
-    }
+  }
+
+  function renderProgress(): ReactNode {
+    return !isFinished && (
+      <div className="checker-progress">{index + 1} / {items.length}</div>
+    );
   }
 
   function renderItem(): ReactNode {
-    return !isFinished && <h2>{items[index].name}</h2>
+    return !isFinished && (
+      <h2
+        key={index}
+        className={`checker-item${itemTransition !== 'none' ? ' ' + itemTransition : ''}`}
+        onAnimationEnd={handleItemAnimationEnd}
+      >
+        {items[index].name}
+      </h2>
+    );
   }
 
   function renderActions(): ReactNode {
     return !isFinished && (
       <>
-        <button className="btn btn-secondary btn-checker" onClick={skipItem}>Skip</button>
-        <button className="btn btn-primary btn-checker" onClick={checkItem}>Check</button>
+        <button className="btn btn-primary btn-checker" onClick={skipItem}>Skip</button>
+        <button className="btn btn-secondary btn-checker" onClick={checkItem}>Check</button>
       </>
     )
   }
@@ -47,7 +83,7 @@ export function Checker() {
     const hasSkippedItems = skippedItems.length > 0;
 
     return isFinished && (
-      <>
+      <div className="checker-result fade-in">
         {hasCheckedItems && (
           <>
             <h3>Checked</h3>
@@ -69,7 +105,7 @@ export function Checker() {
             </ul>
           </>
         )}
-      </>
+      </div>
     );
   }
 
@@ -79,6 +115,7 @@ export function Checker() {
 
   return (
     <div className="checker-container">
+      {renderProgress()}
       <div className="checker-items">
         {renderItem()}
         {renderResult()}

@@ -1,0 +1,135 @@
+.route-transition.is-checker {
+  position: fixed;
+  inset: 0;
+}
+
+.route-transition.circle-forward {
+  animation: circle-expand 0.4s ease-out forwards;
+}
+
+.route-transition.circle-backward {
+  animation: circle-shrink 0.4s ease-in forwards;
+}
+
+@keyframes circle-expand {
+  from {
+    clip-path: circle(0px at var(--origin-x) var(--origin-y));
+  }
+  to {
+    clip-path: circle(var(--end-radius) at var(--origin-x) var(--origin-y));
+  }
+}
+
+@keyframes circle-shrink {
+  from {
+    clip-path: circle(var(--end-radius) at var(--origin-x) var(--origin-y));
+  }
+  to {
+    clip-path: circle(0px at var(--origin-x) var(--origin-y));
+  }
+}
+
+.checker-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 20px;
+  padding-bottom: calc(15px + env(safe-area-inset-bottom));
+  background-color: var(--purple);
+  color: white;
+}
+
+.checker-progress {
+  padding-top: calc(15px + env(safe-area-inset-top));
+  text-align: center;
+  opacity: 0.7;
+}
+
+.checker-container .checker-items {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+}
+
+.checker-container .checker-actions {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.checker-items ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.checker-item {
+  margin: 0;
+}
+
+.checker-item.leave-right {
+  animation: item-slide-out-right 0.1s ease-in forwards;
+}
+
+.checker-item.leave-left {
+  animation: item-slide-out-left 0.1s ease-in forwards;
+}
+
+.checker-item.enter-left {
+  animation: item-slide-in-left 0.1s ease-out;
+}
+
+.checker-item.enter-right {
+  animation: item-slide-in-right 0.1s ease-out;
+}
+
+@keyframes item-slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+}
+
+@keyframes item-slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+}
+
+@keyframes item-slide-in-left {
+  from {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes item-slide-in-right {
+  from {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.btn-checker {
+  width: 100%;
+  height: 50px;
+}
