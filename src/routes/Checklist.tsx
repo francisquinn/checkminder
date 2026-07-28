@@ -4,6 +4,7 @@ import { selectListById, selectListItems, setCurrentListId } from "../features/c
 import { List } from "../features/list/List";
 import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RootState } from "../app/store";
+import { setTransitionOrigin } from "../features/transitionOrigin";
 
 export function Checklist() {
   const { listId } = useParams();
@@ -33,6 +34,16 @@ export function Checklist() {
     }
   }, [canPlay]);
 
+  function handlePlayClick(e: React.MouseEvent<HTMLAnchorElement>): void {
+    const buttonRect = e.currentTarget.getBoundingClientRect();
+
+    setTransitionOrigin({
+      x: buttonRect.left + buttonRect.width / 2,
+      y: buttonRect.top + buttonRect.height / 2,
+      radius: Math.hypot(window.innerWidth, window.innerHeight),
+    });
+  }
+
   function renderPlay(): ReactNode {
     if (!canPlay && !isPlayLeaving) return null;
     return (
@@ -40,6 +51,7 @@ export function Checklist() {
         className={`btn btn-primary btn-icon-only-l ${isPlayLeaving ? 'fade-out' : 'fade-in'}`}
         to="checker"
         state={items}
+        onClick={handlePlayClick}
         onAnimationEnd={() => setIsPlayLeaving(false)}
       >
         <span className="icon icon-play"></span>

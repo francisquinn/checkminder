@@ -1,7 +1,7 @@
 :root {
   --grey: #f4f4f4;
   --lightgrey: #fafafa;
-  --blue: #6666ff;
+  --purple: #6666ff;
   --black: #4c4c4c;
   --red: #ff3b30;
 }
@@ -19,6 +19,16 @@ html {
   height: 100%;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   height: 100%;
   margin: 0 auto;
@@ -33,6 +43,7 @@ body {
 }
 
 main {
+  position: relative;
   margin-bottom: 20px;
   padding: 0 20px;
   padding-bottom: env(safe-area-inset-bottom);
@@ -73,196 +84,11 @@ nav ul li a {
   height: 100%;
 }
 
-/* list */
-
 h1 {
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.list {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.list-header {
-  display: flex;
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  padding-top: 15px;
-  background-color: #ffffff;
-  justify-content: space-between;
-  align-items: center;
-  line-height: 50px;
-  height: 70px;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 0;
-  line-height: 45px;
-  background-color: white;
-  border-bottom: 2px solid var(--lightgrey);
-  min-width: 0;
-  font-size: 16px;
-}
-
-.list-item.is-swipeable {
-  display: block;
-  position: relative;
-  padding: 0;
-  overflow: hidden;
-}
-
-.list-item.is-swipeable.is-entering {
-  animation: fade-slide-up 0.1s ease-out;
-}
-
-.list-item.is-swipeable.is-leaving {
-  animation: fade-slide-up-out 0.1s ease-in forwards;
-  pointer-events: none;
-}
-
-.list-item-edit {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 0;
-  padding-right: 10px;
-  line-height: 45px;
-  background-color: white;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.1s ease;
-  z-index: 2;
-}
-
-.list-item.is-editing .list-item-edit {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.list-item.is-editing > .list-actions {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.list-item-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  line-height: 45px;
-  background-color: white;
-  position: relative;
-  z-index: 1;
-  touch-action: pan-y;
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-  user-select: none;
-}
-
-.list-item-label {
-  display: block;
-  flex: 1;
-  min-width: 0;
-  text-decoration: none;
-  color: black;
-  height: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.list-item input {
-  font-size: 16px;
-  flex: 1;
-  min-width: 0;
-  border-radius: 20px;
-  height: 45px;
-  padding: 0 10px;
-  outline: none !important;
-  border: 1px solid var(--grey);
-}
-
-.list-item input:focus,
-.list-item input:focus-visible {
-  border-color: var(--blue);
-}
-
-.list-actions {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.list-item.is-swipeable > .list-actions {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  padding-right: 10px;
-  gap: 10px;
-  z-index: 0;
-  transition: opacity 0.15s ease;
-}
-
-.list-item.is-dragging {
-  opacity: 0.6;
-  background-color: var(--grey);
-}
-
-.drag-handle {
-  touch-action: none;
-  cursor: grab;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-}
-
-.drag-handle:active {
-  cursor: grabbing;
-}
-
-.list-actions .btn {
-  height: 40px;
-  line-height: normal;
-}
-
-.list-actions .btn.btn-compact {
-  height: 28px;
-}
-
-/* checker */
-
-.checker-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.checker-container .checker-items {
-  margin: auto;
-}
-
-.checker-container .checker-actions {
-  display: flex;
-  justify-content: space-around;
-}
-
-.checker-items ul {
-  padding-left: 15px;
-  list-style-type: circle;
 }
 
 /* btn */
@@ -277,6 +103,12 @@ h1 {
   font-size: 16px;
   cursor: pointer;
   background: none;
+  transform: scale(1);
+  transition: transform 0.1s ease-out;
+}
+
+.btn:active {
+  transform: scale(0.92);
 }
 
 .btn-icon-only {
@@ -302,13 +134,13 @@ h1 {
 }
 
 .btn-primary {
-  background-color: var(--blue);
+  background-color: var(--purple);
   color: white;
 }
 
 .btn-secondary {
   background-color: #ffffff;
-  color: var(--blue);
+  color: var(--purple);
 }
 
 .btn-default {
@@ -328,39 +160,6 @@ h1 {
 
 .btn-create.is-entering {
   animation: fade-in 0.1s ease-out;
-}
-
-@keyframes fade-slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-slide-up-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
 }
 
 @keyframes fade-out {
@@ -388,19 +187,6 @@ h1 {
 .fade-out {
   animation: fade-out 0.1s ease-in forwards;
   pointer-events: none;
-}
-
-.list-item.is-create-row {
-  animation: fade-slide-down 0.1s ease-out;
-}
-
-.list-item.is-create-row.is-leaving {
-  animation: fade-out 0.1s ease-in forwards;
-}
-
-.btn-checker {
-  width: 100%;
-  height: 50px;
 }
 
 /* icon */
