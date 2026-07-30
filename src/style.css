@@ -233,6 +233,19 @@ h1 {
   background-image: url(./icons/gear-solid.svg);
 }
 
+/* error boundary */
+
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  height: 100%;
+  text-align: center;
+  padding: 0 20px;
+}
+
 /* utils */
 
 .d-none {

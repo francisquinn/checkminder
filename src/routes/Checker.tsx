@@ -1,18 +1,24 @@
 import { ReactNode, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import { ChecklistItem } from "../features/core/coreSlice";
 
 type ItemTransition = 'none' | 'leave-left' | 'leave-right' | 'enter-left' | 'enter-right';
 
 export function Checker() {
   const location = useLocation();
+  const { listId } = useParams();
   const items: ChecklistItem[] = location.state;
+  const hasItems = Array.isArray(items) && items.length > 0;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [checkedItems, setCheckedItems] = useState<ChecklistItem[]>([]);
   const [skippedItems, setSkippedItems] = useState<ChecklistItem[]>([]);
   const [itemTransition, setItemTransition] = useState<ItemTransition>('none');
   const [pendingResult, setPendingResult] = useState<'check' | 'skip' | null>(null);
+
+  if (!hasItems) {
+    return <Navigate to={listId ? `/checkminder/${listId}` : "/checkminder/"} replace />;
+  }
 
   function checkItem(): void {
     if (itemTransition !== 'none') return;

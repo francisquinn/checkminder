@@ -7,6 +7,7 @@ import './checker.css';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store.js';
 import { Provider } from 'react-redux';
+import { ErrorBoundary } from './components/ErrorBoundary.js';
 
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('/checkminder/serviceworker.js', { scope: '/checkminder/' });
@@ -14,10 +15,12 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>,
 )
