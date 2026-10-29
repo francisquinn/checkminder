@@ -12,7 +12,7 @@ export function Footer({ isChecker }) {
           <ul>
             <li>
               <Link to="/checkminder/">
-                <span className="icon icon-nav icon-list"></span>
+                <span className="icon icon-nav icon-home"></span>
               </Link>
             </li>
             <li>

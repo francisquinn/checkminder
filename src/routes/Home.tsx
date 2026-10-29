@@ -1,6 +1,6 @@
-import { List } from '../features/list/List';
-import { useSelector } from 'react-redux';
-import { selectLists } from '../features/core/coreSlice';
+import { List } from "../features/list/List";
+import { useSelector } from "react-redux";
+import { selectLists } from "../features/core/coreSlice";
 
 export function Home() {
   const lists = useSelector(selectLists);
@@ -9,7 +9,7 @@ export function Home() {
       <div className="list-header">
         <h1>Checklists</h1>
       </div>
-      <List items={lists}></List>
+      <List items={lists} type="list" />
     </>
   );
 }

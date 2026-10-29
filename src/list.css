@@ -1,0 +1,201 @@
+.list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.list-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding-top: 15px;
+  background-color: #ffffff;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 50px;
+  height: 70px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  line-height: 45px;
+  background-color: white;
+  border-bottom: 2px solid var(--lightgrey);
+  min-width: 0;
+  font-size: 16px;
+}
+
+.list-item.is-swipeable {
+  display: block;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-item.is-swipeable.is-entering {
+  animation: fade-slide-up 0.1s ease-out;
+}
+
+.list-item.is-swipeable.is-leaving {
+  animation: fade-slide-up-out 0.1s ease-in forwards;
+  pointer-events: none;
+}
+
+.list-item-edit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  padding-right: 10px;
+  line-height: 45px;
+  background-color: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+  z-index: 2;
+}
+
+.list-item.is-editing .list-item-edit {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.list-item.is-editing > .list-actions {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.list-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  line-height: 45px;
+  background-color: white;
+  position: relative;
+  z-index: 1;
+  touch-action: pan-y;
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  user-select: none;
+}
+
+.list-item-label {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: black;
+  height: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item input {
+  font-size: 16px;
+  flex: 1;
+  min-width: 0;
+  border-radius: 20px;
+  height: 45px;
+  padding: 0 10px;
+  outline: none !important;
+  border: 1px solid var(--grey);
+}
+
+.list-item input:focus,
+.list-item input:focus-visible {
+  border-color: var(--purple);
+}
+
+.list-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.list-item.is-swipeable > .list-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  padding-right: 10px;
+  gap: 10px;
+  z-index: 0;
+  transition: opacity 0.15s ease;
+}
+
+.list-item.is-dragging {
+  opacity: 0.6;
+  background-color: var(--grey);
+}
+
+.drag-handle {
+  touch-action: none;
+  cursor: grab;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.list-actions .btn {
+  height: 40px;
+  line-height: normal;
+}
+
+.list-actions .btn.btn-compact {
+  height: 28px;
+}
+
+@keyframes fade-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-up-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.list-item.is-create-row {
+  animation: fade-slide-down 0.1s ease-out;
+}
+
+.list-item.is-create-row.is-leaving {
+  animation: fade-out 0.1s ease-in forwards;
+}

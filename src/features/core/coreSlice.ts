@@ -1,28 +1,30 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { arrayMove } from "@dnd-kit/sortable";
 import { RootState } from "../../app/store";
 
-export type Entry = {
+export type Checklist = {
+  id: string,
+  name: string
+};
+
+export type ChecklistItem = {
   id: string,
   name: string,
-  list_id?: string
+  list_id: string
 };
 
 type Entries = 'lists' | 'items';
 
 interface coreState {
-  lists: Entry[],
-  items: Entry[],
+  lists: Checklist[],
+  items: ChecklistItem[],
   currentListId: string,
-  isChecking: boolean,
-  isCreating: boolean
 };
 
 const initialState: coreState = {
-  lists: JSON.parse(localStorage.getItem('lists') || '[]') as Entry[],
-  items: JSON.parse(localStorage.getItem('items') || '[]') as Entry[],
+  lists: JSON.parse(localStorage.getItem('lists') || '[]') as Checklist[],
+  items: JSON.parse(localStorage.getItem('items') || '[]') as ChecklistItem[],
   currentListId: '',
-  isChecking: false,
-  isCreating: false
 };
 
 const coreSlice = createSlice({
@@ -56,42 +58,52 @@ const coreSlice = createSlice({
     setCurrentListId: (state, action) => {
       state.currentListId = action.payload;
     },
-    isCheckingItems: (state, action) => {
-      state.isChecking = action.payload;
+    reorderLists: (state, action) => {
+      const { activeId, overId } = action.payload;
+      const oldIndex = state.lists.findIndex(list => list.id === activeId);
+      const newIndex = state.lists.findIndex(list => list.id === overId);
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      state.lists = arrayMove(state.lists, oldIndex, newIndex);
+      setLocalStorage('lists', state.lists);
     },
-    isCreatingList: (state, action) => {
-      state.isCreating = action.payload;
-    }
+    reorderItems: (state, action) => {
+      const { activeId, overId } = action.payload;
+      const listId = state.items.find(item => item.id === activeId)?.list_id;
+      if (!listId) return;
+      const listItems = state.items.filter(item => item.list_id === listId);
+      const oldIndex = listItems.findIndex(item => item.id === activeId);
+      const newIndex = listItems.findIndex(item => item.id === overId);
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      const reordered = arrayMove(listItems, oldIndex, newIndex);
+      let cursor = 0;
+      state.items = state.items.map(item => item.list_id === listId ? reordered[cursor++] : item);
+      setLocalStorage('items', state.items);
+    },
   }
 });
 
 export const {
-  isCheckingItems,
-  isCreatingList,
   setCurrentListId,
   createList,
   createItem,
   updateList,
   updateItem,
   deleteList,
-  deleteItem
+  deleteItem,
+  reorderLists,
+  reorderItems
 } = coreSlice.actions;
 
 // Reducer functions
-const updateEntry = (entries: Entry[], payload: Entry): Entry[] => {
-  return entries.map(entry => {
-    if (entry.id === payload.id) {
-      return { ...entry, name: payload.name };
-    }
-    return entry;
-  });
+const updateEntry = <T extends { id: string; name: string }>(entries: T[], payload: { id: string; name: string }): T[] => {
+  return entries.map(entry => entry.id === payload.id ? { ...entry, name: payload.name } : entry);
 };
 
-const removeEntry = (entries: Entry[], payload: Entry): Entry[] => {
+const removeEntry = <T extends { id: string }>(entries: T[], payload: { id: string }): T[] => {
   return entries.filter(entry => entry.id !== payload.id);
 };
 
-const setLocalStorage = (entryType: Entries, entries: Entry[] | string): void => {
+const setLocalStorage = (entryType: Entries, entries: Checklist[] | ChecklistItem[]): void => {
   localStorage.setItem(entryType, JSON.stringify(entries));
 };
 
@@ -100,21 +112,15 @@ export const selectCore = (state: RootState) => state.core;
 export const selectLists = (state: RootState) => state.core.lists;
 const selectItems = (state: RootState) => state.core.items;
 const selectListId = (_state: RootState, listId: string) => listId;
-export const selectIsChecking = (state: RootState) => state.core.isChecking;
-export const selectIsCreating = (state: RootState) => state.core.isCreating;
 
 export const selectListItems = createSelector(
   [selectItems, selectListId],
-  (items, listId): Entry[] => {
-    return items.filter((item: Entry) => item.list_id === listId);
-  }
+  (items, listId): ChecklistItem[] => items.filter(item => item.list_id === listId)
 );
 
 export const selectListById = createSelector(
   [selectLists, selectListId],
-  (lists, listId): Entry | undefined => {
-    return lists.find((list: Entry) => list.id === listId);
-  }
+  (lists, listId): Checklist | undefined => lists.find(list => list.id === listId)
 );
 
 export default coreSlice.reducer;
