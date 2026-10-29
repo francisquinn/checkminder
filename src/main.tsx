@@ -10,7 +10,9 @@ import { Provider } from 'react-redux';
 import { ErrorBoundary } from './components/ErrorBoundary.js';
 
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/checkminder/serviceworker.js', { scope: '/checkminder/' });
+  navigator.serviceWorker
+    .register(`${import.meta.env.BASE_URL}serviceworker.js`, { scope: import.meta.env.BASE_URL })
+    .catch(error => console.error('Failed to register Checkminder offline support:', error));
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
