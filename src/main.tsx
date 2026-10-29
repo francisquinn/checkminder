@@ -6,8 +6,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store.js';
 import { Provider } from 'react-redux';
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/checkminder/serviceworker.js', { scope: '/checkminder/' });
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register(`${import.meta.env.BASE_URL}serviceworker.js`, { scope: import.meta.env.BASE_URL })
+    .catch(error => console.error('Failed to register Checkminder offline support:', error));
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

@@ -23,6 +23,10 @@ Find out more on how to install a PWA on your device here
 
 ⚠️ LocalStorage is used to store the list details so data is not shared between browsers
 
+The production app caches its files after the first online visit, so it can be
+opened and used offline afterwards. Checklist data remains in that browser's
+local storage.
+
 ## Technology
 React, Vite and a touch of CSS
 
@@ -48,5 +52,4 @@ If you would like to collaborate with me on this project get it touch!
 
 ## Licence
 MIT licence
-
 
